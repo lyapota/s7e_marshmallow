@@ -92,7 +92,8 @@ FUNC_BUILD_DTIMAGE_TARGET()
 	echo ""
 	echo "DT image target : $INSTALLED_DTIMAGE_TARGET"
 
-	cd "$BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/dtb"
+	mkdir -p "$BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/dtb"
+        cd "$BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/dtb"
 	for dts in $DTSFILES; do
 		echo "=> Processing: ${dts}.dts"
 		"${CROSS_COMPILE}cpp" -nostdinc -undef -x assembler-with-cpp -I "$BUILD_KERNEL_DIR/include" "$BUILD_KERNEL_DIR/arch/$ARCH/boot/dts/${dts}.dts" > "${dts}.dts"
@@ -125,11 +126,13 @@ FUNC_BUILD_KERNEL()
         echo "build common config="$KERNEL_DEFCONFIG ""
 	echo "build model config="$MODEL_DEFCONFIG ""
 
-	mkdir $BUILD_KERNEL_DIR/output
-	rm $KERNEL_IMG
-	rm $BUILD_KERNEL_OUT_DIR/firmware/apm_8890_evt1.h
+	mkdir -p $BUILD_KERNEL_DIR/output
+	rm -f $KERNEL_IMG
+        mkdir -p $BUILD_KERNEL_OUT_DIR/firmware
+        rm -f $BUILD_KERNEL_OUT_DIR/firmware/apm_8890_evt1.h
 	ln -s $BUILD_KERNEL_DIR/firmware/apm_8890_evt1.h $BUILD_KERNEL_OUT_DIR/firmware/apm_8890_evt1.h
-	rm $BUILD_KERNEL_OUT_DIR/init/vmm.elf
+        mkdir -p $BUILD_KERNEL_OUT_DIR/init
+	rm -f $BUILD_KERNEL_OUT_DIR/init/vmm.elf
 	ln -s $BUILD_KERNEL_DIR/init/vmm.elf $BUILD_KERNEL_OUT_DIR/init/vmm.elf
 
 if [ $MODEL != hero2lte ]
