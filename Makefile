@@ -416,7 +416,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Wno-switch-bool \
 		   -Wno-switch-enum \
 		   -Wno-format-security \
-		   -mtune=cortex-a72.cortex-a53 \
+		   -mtune=cortex-a57.cortex-a53 \
 		   -std=gnu89
 
 KBUILD_AFLAGS_KERNEL :=
@@ -711,7 +711,7 @@ else
 
 # This warning generated too much noise in a regular build.
 # Use make W=1 to enable this warning (see scripts/Makefile.build)
-KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
+KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable, unused-const-variable)
 endif
 
 ifdef CONFIG_FRAME_POINTER
