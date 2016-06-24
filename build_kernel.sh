@@ -163,6 +163,39 @@ fi
 	echo ""
 }
 
+IMAGE_KITCHEN_DIR=$BUILD_ROOT_DIR/AIK-Linux
+BOOT_IMAGE_TARGET=$IMAGE_KITCHEN_DIR/boot.img
+
+FUNC_BUILD_BOOT_IMAGE()
+{
+	echo ""
+	echo "================================="
+	echo "START : FUNC_BUILD_BOOT_IMAGE"
+	echo "================================="
+	echo ""
+	echo "BOOT image target : $BOOT_IMAGE_TARGET"
+
+	rm -f $IMAGE_KITCHEN_DIR/split_img/boot.img-dtb
+	rm -f $IMAGE_KITCHEN_DIR/split_img/boot.img-zImage
+	rm -f $BOOT_IMAGE_TARGET
+	cp $BUILD_KERNEL_DIR/output/dt-$MODEL.img  $IMAGE_KITCHEN_DIR/split_img/boot.img-dtb
+	cp $BUILD_KERNEL_DIR/output/Image-$MODEL  $IMAGE_KITCHEN_DIR/split_img/boot.img-zImage
+
+	echo "Generating boot.img..."
+	cd "$IMAGE_KITCHEN_DIR"
+	./repackimg.sh
+                   cp $IMAGE_KITCHEN_DIR/image-new.img $BOOT_IMAGE_TARGET
+                   rm -f $IMAGE_KITCHEN_DIR/image-new.img
+
+	chmod a+r $BOOT_IMAGE_TARGET
+
+	echo ""
+	echo "================================="
+	echo "END   : UNC_BUILD_BOOT_IMAGE"
+	echo "================================="
+	echo ""
+}
+
 # MAIN FUNCTION
 rm -rf ./build.log
 (
@@ -171,6 +204,7 @@ rm -rf ./build.log
     FUNC_CLEAN_DTB
     FUNC_BUILD_KERNEL
     FUNC_BUILD_DTIMAGE_TARGET
+    FUNC_BUILD_BOOT_IMAGE
 
     END_TIME=`date +%s`
 	
