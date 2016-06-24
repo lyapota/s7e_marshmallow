@@ -26,11 +26,12 @@
 #include "gpu_control.h"
 #ifdef CONFIG_CPU_THERMAL_IPA
 #include "gpu_ipa.h"
+#include <linux/ipa.h>
 #endif /* CONFIG_CPU_THERMAL_IPA */
 #include "gpu_custom_interface.h"
 
 #ifdef CONFIG_SOC_EXYNOS8890
-#define GPU_MAX_VOLT		850000
+#define GPU_MAX_VOLT		1000000
 #define GPU_MIN_VOLT		500000
 #define GPU_VOLT_STEP		6250
 #else
@@ -245,7 +246,7 @@ static ssize_t show_volt_table(struct device *dev, struct device_attribute *attr
 	pr_len = (size_t)((PAGE_SIZE - 2) / (min-max));
 
 	for (i = max; i <= min; i++) {
-		count += snprintf(&buf[count], pr_len, "%d %d\n", 
+		count += snprintf(&buf[count], pr_len, "%d %d\n",
 				platform->table[i].clock,
 				platform->table[i].voltage);
 	}
@@ -278,16 +279,16 @@ static ssize_t set_volt_table(struct device *dev, struct device_attribute *attr,
 	spin_lock_irqsave(&platform->gpu_dvfs_spinlock, flags);
 
 	if (tokens == 2 && target > -1) {
-		if ((rest = t[1] % GPU_VOLT_STEP) != 0) 
+		if ((rest = t[1] % GPU_VOLT_STEP) != 0)
 			t[1] += GPU_VOLT_STEP - rest;
-		
+
 		sanitize_min_max(t[1], GPU_MIN_VOLT, GPU_MAX_VOLT);
 		platform->table[target].voltage = t[1];
 	} else {
 		for (i = 0; i < tokens; i++) {
-			if ((rest = t[i] % GPU_VOLT_STEP) != 0) 
+			if ((rest = t[i] % GPU_VOLT_STEP) != 0)
 				t[i] += GPU_VOLT_STEP - rest;
-			
+
 			sanitize_min_max(t[i], GPU_MIN_VOLT, GPU_MAX_VOLT);
 			platform->table[i + max].voltage = t[i];
 		}
