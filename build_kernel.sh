@@ -1,5 +1,6 @@
 #!/bin/bash
 # Jesse kernel build script v0.2
+# modified by lyapota
 
 MODEL=$1
 
@@ -19,11 +20,13 @@ PRODUCT_OUT=$BUILD_ROOT_DIR/kernel_out
 BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-gnu-5.3/bin/aarch64-
 BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
-# Default Python version is 2.7
-#mkdir -p bin
-#ln -sf /usr/bin/python2.7 ./bin/python
 export PATH=$(pwd)/bin:$PATH
 KERNEL_DEFCONFIG=exynos8890-lyapota_defconfig
+
+KERNEL_VERSION="0.3"
+KERNEL_NAME="-lyapota-kernel"
+export LOCALVERSION=${KERNEL_NAME}-v${KERNEL_VERSION}
+
 
 if [ $MODEL != hero2lte ]
 then MODEL_DEFCONFIG=exynos8890-"$MODEL"_defconfig
@@ -188,10 +191,46 @@ FUNC_BUILD_BOOT_IMAGE()
                    rm -f $IMAGE_KITCHEN_DIR/image-new.img
 
 	chmod a+r $BOOT_IMAGE_TARGET
+	ls -l $BOOT_IMAGE_TARGET
 
 	echo ""
 	echo "================================="
-	echo "END   : UNC_BUILD_BOOT_IMAGE"
+	echo "END   : FUNC_BUILD_BOOT_IMAGE"
+	echo "================================="
+	echo ""
+}
+
+
+ZIP_FILE_DIR=$BUILD_ROOT_DIR/BUILD
+ZIP_NAME=G935F-lyapota-KERNEL-v$KERNEL_VERSION.zip
+ZIP_FILE_TARGET=$ZIP_FILE_DIR/$ZIP_NAME
+
+FUNC_PACK_ZIP_FILE()
+{
+	echo ""
+	echo "================================="
+	echo "START : FUNC_PACK_ZIP_FILE"
+	echo "================================="
+	echo ""
+	echo "ZIP file target : $ZIP_FILE_TARGET"
+
+	rm -f $ZIP_FILE_DIR/boot.img
+	rm -f $ZIP_FILE_TARGET
+	cp $BOOT_IMAGE_TARGET $ZIP_FILE_DIR
+
+	cd $ZIP_FILE_DIR
+
+	echo "Packing boot.img..."
+	zip -gq $ZIP_NAME -r META-INF/ -x "*~"
+	zip -gq $ZIP_NAME -r mcRegistry/ -x "*~" 
+	zip -gq $ZIP_NAME boot.img
+
+	chmod a+r $ZIP_NAME
+	ls -l $ZIP_NAME
+
+	echo ""
+	echo "================================="
+	echo "END   : FUNC_PACK_ZIP_FILE"
 	echo "================================="
 	echo ""
 }
@@ -205,6 +244,7 @@ rm -rf ./build.log
     FUNC_BUILD_KERNEL
     FUNC_BUILD_DTIMAGE_TARGET
     FUNC_BUILD_BOOT_IMAGE
+    FUNC_PACK_ZIP_FILE
 
     END_TIME=`date +%s`
 	
