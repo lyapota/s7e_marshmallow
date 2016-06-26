@@ -18,6 +18,7 @@ BUILD_KERNEL_OUT_DIR=$BUILD_ROOT_DIR/kernel_out/KERNEL_OBJ
 PRODUCT_OUT=$BUILD_ROOT_DIR/kernel_out
 
 BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-gnu-5.3/bin/aarch64-
+# BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-android-6.1-linaro/bin/aarch64-linux-android-
 BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
 export PATH=$(pwd)/bin:$PATH
@@ -81,7 +82,7 @@ FUNC_CLEAN_DTB()
 	fi
 }
 
-INSTALLED_DTIMAGE_TARGET=${PRODUCT_OUT}/dt.img
+INSTALLED_DTIMAGE_TARGET=${BUILD_KERNEL_OUT_DIR}/dt.img
 DTBTOOL=$BUILD_KERNEL_DIR/tools/dtbtool
 PAGE_SIZE=2048
 DTB_PADDING=0
@@ -96,7 +97,7 @@ FUNC_BUILD_DTIMAGE_TARGET()
 	echo "DT image target : $INSTALLED_DTIMAGE_TARGET"
 
 	mkdir -p "$BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/dtb"
-        cd "$BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/dtb"
+	cd "$BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/dtb"
 	for dts in $DTSFILES; do
 		echo "=> Processing: ${dts}.dts"
 		"${CROSS_COMPILE}cpp" -nostdinc -undef -x assembler-with-cpp -I "$BUILD_KERNEL_DIR/include" "$BUILD_KERNEL_DIR/arch/$ARCH/boot/dts/${dts}.dts" > "${dts}.dts"
@@ -131,10 +132,10 @@ FUNC_BUILD_KERNEL()
 
 	mkdir -p $BUILD_KERNEL_DIR/output
 	rm -f $KERNEL_IMG
-        mkdir -p $BUILD_KERNEL_OUT_DIR/firmware
-        rm -f $BUILD_KERNEL_OUT_DIR/firmware/apm_8890_evt1.h
+	mkdir -p $BUILD_KERNEL_OUT_DIR/firmware
+	rm -f $BUILD_KERNEL_OUT_DIR/firmware/apm_8890_evt1.h
 	ln -s $BUILD_KERNEL_DIR/firmware/apm_8890_evt1.h $BUILD_KERNEL_OUT_DIR/firmware/apm_8890_evt1.h
-        mkdir -p $BUILD_KERNEL_OUT_DIR/init
+	mkdir -p $BUILD_KERNEL_OUT_DIR/init
 	rm -f $BUILD_KERNEL_OUT_DIR/init/vmm.elf
 	ln -s $BUILD_KERNEL_DIR/init/vmm.elf $BUILD_KERNEL_OUT_DIR/init/vmm.elf
 
@@ -187,8 +188,14 @@ FUNC_BUILD_BOOT_IMAGE()
 	echo "Generating boot.img..."
 	cd "$IMAGE_KITCHEN_DIR"
 	./repackimg.sh
-                   cp $IMAGE_KITCHEN_DIR/image-new.img $BOOT_IMAGE_TARGET
-                   rm -f $IMAGE_KITCHEN_DIR/image-new.img
+	cp $IMAGE_KITCHEN_DIR/image-new.img $BOOT_IMAGE_TARGET
+	#Remove SEANDROID ENFORCING Message
+	echo -n "SEANDROIDENFORCE" >> $BOOT_IMAGE_TARGET
+	rm -f $IMAGE_KITCHEN_DIR/image-new.img
+
+	if [ ! -f "$BOOT_IMAGE_TARGET" ]; then
+		exit -1
+	fi
 
 	chmod a+r $BOOT_IMAGE_TARGET
 	ls -l $BOOT_IMAGE_TARGET
@@ -221,9 +228,14 @@ FUNC_PACK_ZIP_FILE()
 	cd $ZIP_FILE_DIR
 
 	echo "Packing boot.img..."
+        sed -i "s/Lyapota Kernel Version .../Lyapota Kernel Version ${KERNEL_VERSION}/g" META-INF/com/google/android/update-binary
 	zip -gq $ZIP_NAME -r META-INF/ -x "*~"
 	zip -gq $ZIP_NAME -r mcRegistry/ -x "*~" 
 	zip -gq $ZIP_NAME boot.img
+
+	if [ ! -f "$ZIP_FILE_TARGET" ]; then
+		exit -1
+	fi
 
 	chmod a+r $ZIP_NAME
 	ls -l $ZIP_NAME
