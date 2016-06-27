@@ -71,8 +71,8 @@
 #ifdef CONFIG_SOC_EXYNOS8890
 #define CL0_MIN_FREQ		442000
 #define CL0_MAX_FREQ		1690000
-#define CL1_MIN_FREQ		728000
-#define CL1_MAX_FREQ		2600000
+#define CL1_MIN_FREQ		624000
+#define CL1_MAX_FREQ		2700000
 #else
 #error "Please define core frequency ranges for current SoC."
 #endif
@@ -1477,6 +1477,9 @@ static ssize_t store_cpufreq_min_limit(struct kobject *kobj, struct attribute *a
 	if (!sscanf(buf, "%8d", &cluster1_input))
 		return -EINVAL;
 
+	if (cluster1_input > 2392000)
+		cluster1_input = 2392000;
+
 	save_cpufreq_min_limit(cluster1_input);
 	cancel_delayed_work_sync(&dvfs_reset_work);
 	if (cluster1_input > 0)
@@ -2679,17 +2682,17 @@ static int exynos_mp_cpufreq_parse_dt(struct device_node *np, cluster_type cl)
 		ptr->max_support_idx_table = kzalloc(sizeof(unsigned int)
 				* (NR_CLUST1_CPUS + 1), GFP_KERNEL);
 
-		/* For extremely low Grade phones and very unlucky users, use stock freq_table */
-		if (asv_big < 3) {
+		/* For Grade D,E phones, use stock freq_table */
+		if (asv_big < 7) {
 		ret = of_property_read_u32_array(np, "low_cl1_max_support_idx_table",
 				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
-		/* For Grade D,E, use mid OC freq_table */
-		} else if (asv_big < 5) {
+		/* For Grade C phones, use mid OC freq_table */
+		} else if (asv_big < 11) {
 		ret = of_property_read_u32_array(np, "mid_cl1_max_support_idx_table",
 				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
-		/* Grade A,B, C phones */
+		/* Grade A,B phones? That's amazing, let's unleash the Exynos */
 		} else {
-		ret = of_property_read_u32_array(np, "high_cl1_max_support_idx_table",			
+		ret = of_property_read_u32_array(np, "high_cl1_max_support_idx_table",
 				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
 		}
 

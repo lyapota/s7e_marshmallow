@@ -153,6 +153,8 @@ static unsigned int cam_subgrp_index = 256;
 static unsigned int disp_subgrp_index = 256;
 static unsigned int g3dm_subgrp_index = 256;
 
+static unsigned int asv_undervoltage = 6250 * 8;
+
 static unsigned int big_ssa1_table[8];
 static unsigned int little_ssa1_table[8];
 static unsigned int g3d_ssa1_table[8];
@@ -576,8 +578,11 @@ static int dvfsbig_get_asv_table(unsigned int *table)
 
 	max_lv = asv_dvfs_big->table->num_of_lv;
 
-	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvfs_big, lv);
+	for (lv = 0; lv < max_lv; lv++) {
+		table[lv] = get_asv_voltage(cal_asv_dvfs_big, lv) - asv_undervoltage;
+		if ((lv > 18) && (table[lv-1] - (6250 * 2) > 500000))
+			table[lv] = table[lv-1] - (6250 * 2);
+	}
 
 	return max_lv;
 }
@@ -588,8 +593,15 @@ static int dvfslittle_get_asv_table(unsigned int *table)
 
 	max_lv = asv_dvfs_little->table->num_of_lv;
 
-	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvfs_little, lv);
+	for (lv = 0; lv < max_lv; lv++) {
+		table[lv] = get_asv_voltage(cal_asv_dvfs_little, lv) - asv_undervoltage;
+		if ((lv > 14) && (table[lv-1] - (6250 * 5) > 500000))
+			table[lv] = table[lv-1] - (6250 * 5);
+	}
+
+	for (lv = 3; lv >= 0; lv--)
+		if (table[lv] <= table[lv+1])
+			table[lv] = table[lv+1] + (6250 * 10);
 
 	return max_lv;
 }
@@ -601,7 +613,7 @@ static int dvfsg3d_get_asv_table(unsigned int *table)
 	max_lv = asv_dvfs_g3d->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvfs_g3d, lv);
+		table[lv] = get_asv_voltage(cal_asv_dvfs_g3d, lv) - asv_undervoltage;
 
 	return max_lv;
 }
@@ -613,7 +625,7 @@ static int dvfsmif_get_asv_table(unsigned int *table)
 	max_lv = asv_dvfs_mif->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvfs_mif, lv);
+		table[lv] = get_asv_voltage(cal_asv_dvfs_mif, lv) - asv_undervoltage;
 
 	return max_lv;
 }
@@ -625,7 +637,7 @@ static int dvfsint_get_asv_table(unsigned int *table)
 	max_lv = asv_dvfs_int->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvfs_int, lv);
+		table[lv] = get_asv_voltage(cal_asv_dvfs_int, lv) - asv_undervoltage;
 
 	return max_lv;
 }
@@ -637,7 +649,7 @@ static int dvfscam_get_asv_table(unsigned int *table)
 	max_lv = asv_dvfs_cam->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvfs_cam, lv);
+		table[lv] = get_asv_voltage(cal_asv_dvfs_cam, lv) - asv_undervoltage;
 
 	return max_lv;
 }
@@ -649,7 +661,7 @@ static int dvfsdisp_get_asv_table(unsigned int *table)
 	max_lv = asv_dvfs_disp->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvfs_disp, lv);
+		table[lv] = get_asv_voltage(cal_asv_dvfs_disp, lv) - asv_undervoltage;
 
 	return max_lv;
 }
@@ -661,7 +673,7 @@ static int dvsg3dm_get_asv_table(unsigned int *table)
 	max_lv = asv_dvs_g3dm->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvs_g3dm, lv);
+		table[lv] = get_asv_voltage(cal_asv_dvs_g3dm, lv) - asv_undervoltage;
 
 	return max_lv;
 }

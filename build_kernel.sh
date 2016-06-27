@@ -24,7 +24,7 @@ BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 export PATH=$(pwd)/bin:$PATH
 KERNEL_DEFCONFIG=exynos8890-lyapota_defconfig
 
-KERNEL_VERSION="0.3"
+KERNEL_VERSION="0.4"
 KERNEL_NAME="-lyapota-kernel"
 export LOCALVERSION=${KERNEL_NAME}-v${KERNEL_VERSION}
 
