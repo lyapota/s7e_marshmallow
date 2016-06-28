@@ -416,7 +416,6 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Wno-switch-bool \
 		   -Wno-switch-enum \
 		   -Wno-format-security \
-		   -mtune=cortex-a57.cortex-a53 \
 		   -std=gnu89
 
 KBUILD_AFLAGS_KERNEL :=
@@ -634,7 +633,8 @@ KBUILD_CFLAGS	+= -O2
 endif
 
 ifdef CONFIG_KERNEL_OPTIMIZATION
-KBUILD_CFLAGS	+= -Ofast -pipe -DNDEBUG -fpredictive-commoning -fgraphite -fgraphite-identity -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block -floop-nest-optimize -funsafe-math-optimizations -ftree-loop-ivcanon -fweb -frename-registers -fmodulo-sched -ftree-vectorize -fgcse-after-reload -fgcse-las
+KBUILD_CFLAGS	+= -march=armv8-a -mtune=cortex-a72.cortex-a53
+# KBUILD_CFLAGS	+= -mfpu=neon-vfpv4 -mfloat-abi=hard
 endif
 
 # Tell gcc to never replace conditional load with a non-conditional one
