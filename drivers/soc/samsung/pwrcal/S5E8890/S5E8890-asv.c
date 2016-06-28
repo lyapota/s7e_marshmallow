@@ -622,8 +622,20 @@ static int dvfsg3d_get_asv_table(unsigned int *table)
 
 	max_lv = asv_dvfs_g3d->table->num_of_lv;
 
-	for (lv = 0; lv < max_lv; lv++)
+	for (lv = 0; lv < max_lv; lv++) {
 		table[lv] = get_asv_voltage(cal_asv_dvfs_g3d, lv) - asv_undervoltage;
+		if (lv > 8) {
+                	if (table[lv-1] - (6250 * 2) > 500000)
+				table[lv] = table[lv-1] - (6250 * 4);
+			else
+				table[lv] = 500000;
+		}
+	}
+
+	if (table[1] + (6250 * 8) < 850000)
+	        table[0] = table[1] + (6250 * 8);
+	else
+	        table[0] = 850000;
 
 	return max_lv;
 }
