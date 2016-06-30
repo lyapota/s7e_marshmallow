@@ -153,7 +153,8 @@ static unsigned int cam_subgrp_index = 256;
 static unsigned int disp_subgrp_index = 256;
 static unsigned int g3dm_subgrp_index = 256;
 
-static unsigned int asv_undervoltage = 6250 * 4;
+static unsigned int asv_vol_step = 6250;
+static int arg_vdd_uv = 0;
 
 static unsigned int big_ssa1_table[8];
 static unsigned int little_ssa1_table[8];
@@ -574,9 +575,10 @@ static unsigned int get_asv_voltage(enum dvfs_id domain, unsigned int lv)
 
 static int dvfsbig_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv, asv_undervoltage;
 
 	max_lv = asv_dvfs_big->table->num_of_lv;
+	asv_undervoltage = asv_vol_step * arg_vdd_uv;
 
 	for (lv = 0; lv < max_lv; lv++) {
 		table[lv] = get_asv_voltage(cal_asv_dvfs_big, lv) - asv_undervoltage;
@@ -596,7 +598,7 @@ static int dvfsbig_get_asv_table(unsigned int *table)
 
 static int dvfslittle_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv, asv_undervoltage;
 
 	max_lv = asv_dvfs_little->table->num_of_lv;
 
@@ -618,9 +620,10 @@ static int dvfslittle_get_asv_table(unsigned int *table)
 
 static int dvfsg3d_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv, asv_undervoltage;
 
 	max_lv = asv_dvfs_g3d->table->num_of_lv;
+	asv_undervoltage = asv_vol_step * arg_vdd_uv;
 
 	for (lv = 0; lv < max_lv; lv++) {
 		table[lv] = get_asv_voltage(cal_asv_dvfs_g3d, lv) - asv_undervoltage;
@@ -642,9 +645,10 @@ static int dvfsg3d_get_asv_table(unsigned int *table)
 
 static int dvfsmif_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv, asv_undervoltage;
 
 	max_lv = asv_dvfs_mif->table->num_of_lv;
+	asv_undervoltage = asv_vol_step * arg_vdd_uv;
 
 	for (lv = 0; lv < max_lv; lv++)
 		table[lv] = get_asv_voltage(cal_asv_dvfs_mif, lv) - asv_undervoltage;
@@ -654,9 +658,10 @@ static int dvfsmif_get_asv_table(unsigned int *table)
 
 static int dvfsint_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv, asv_undervoltage;
 
 	max_lv = asv_dvfs_int->table->num_of_lv;
+	asv_undervoltage = asv_vol_step * arg_vdd_uv;
 
 	for (lv = 0; lv < max_lv; lv++)
 		table[lv] = get_asv_voltage(cal_asv_dvfs_int, lv) - asv_undervoltage;
@@ -666,9 +671,10 @@ static int dvfsint_get_asv_table(unsigned int *table)
 
 static int dvfscam_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv, asv_undervoltage;
 
 	max_lv = asv_dvfs_cam->table->num_of_lv;
+	asv_undervoltage = asv_vol_step * arg_vdd_uv;
 
 	for (lv = 0; lv < max_lv; lv++)
 		table[lv] = get_asv_voltage(cal_asv_dvfs_cam, lv) - asv_undervoltage;
@@ -678,9 +684,10 @@ static int dvfscam_get_asv_table(unsigned int *table)
 
 static int dvfsdisp_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv, asv_undervoltage;
 
 	max_lv = asv_dvfs_disp->table->num_of_lv;
+	asv_undervoltage = asv_vol_step * arg_vdd_uv;
 
 	for (lv = 0; lv < max_lv; lv++)
 		table[lv] = get_asv_voltage(cal_asv_dvfs_disp, lv) - asv_undervoltage;
@@ -690,9 +697,10 @@ static int dvfsdisp_get_asv_table(unsigned int *table)
 
 static int dvsg3dm_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv, asv_undervoltage;
 
 	max_lv = asv_dvs_g3dm->table->num_of_lv;
+	asv_undervoltage = asv_vol_step * arg_vdd_uv;
 
 	for (lv = 0; lv < max_lv; lv++)
 		table[lv] = get_asv_voltage(cal_asv_dvs_g3dm, lv) - asv_undervoltage;
@@ -1377,3 +1385,22 @@ struct cal_asv_ops cal_asv_ops = {
 	.get_ids_info = asv_get_ids_info,
 	.set_ssa0 = asv_set_ssa0,
 };
+
+static int __init cpufreq_read_vdd_uv(char *vdd_uv)
+{
+	long ui_mv, err;
+
+	err =  strict_strtol(vdd_uv, 0, &ui_mv);
+	if (err)
+		arg_vdd_uv = 0;
+	else
+		if (abs(ui_mv) >= 1 && abs(ui_mv) <= 8)
+			arg_vdd_uv = ui_mv;
+		else
+			arg_vdd_uv = 0;
+
+	printk("elementalx: vdd_uv=%d mV\n", arg_vdd_uv);
+	return 0;
+}
+__setup("vdd_uv=", cpufreq_read_vdd_uv);
+
