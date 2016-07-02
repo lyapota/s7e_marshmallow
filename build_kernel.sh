@@ -221,17 +221,22 @@ FUNC_PACK_ZIP_FILE()
 	echo ""
 	echo "ZIP file target : $ZIP_FILE_TARGET"
 
-	rm -f $ZIP_FILE_DIR/boot.img
+	rm -f $ZIP_FILE_DIR/kernel/boot.img
 	rm -f $ZIP_FILE_TARGET
-	cp $BOOT_IMAGE_TARGET $ZIP_FILE_DIR
+	cp $BOOT_IMAGE_TARGET $ZIP_FILE_DIR/kernel
 
 	cd $ZIP_FILE_DIR
 
 	echo "Packing boot.img..."
-        sed -i "s/Lyapota Kernel Version .../Lyapota Kernel Version ${KERNEL_VERSION}/g" META-INF/com/google/android/update-binary
+        sed -i "s/ini_set(\"rom_version\",.*\".*\");/ini_set(\"rom_version\",          \"${KERNEL_VERSION}\");/g" META-INF/com/google/android/aroma-config
+
+        export LC_TIME=en_US
+        CURRENT_DATE=`date +"%d %B %Y"`
+        sed -i "s/ini_set(\"rom_date\",.*\".*\");/ini_set(\"rom_date\",             \"${CURRENT_DATE}\");/g" META-INF/com/google/android/aroma-config
+
 	zip -gq $ZIP_NAME -r META-INF/ -x "*~"
-	zip -gq $ZIP_NAME -r mcRegistry/ -x "*~" 
-	zip -gq $ZIP_NAME boot.img
+	zip -gq $ZIP_NAME -r system/ -x "*~" 
+	zip -gq $ZIP_NAME -r kernel/ -x "*~" 
 
 	if [ ! -f "$ZIP_FILE_TARGET" ]; then
 		exit -1
