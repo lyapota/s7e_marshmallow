@@ -1399,7 +1399,7 @@ static int __init cpufreq_read_vdd_uv(char *vdd_uv)
 		else
 			arg_vdd_uv = 0;
 
-	printk("elementalx: vdd_uv=%d mV\n", arg_vdd_uv);
+	printk("lyapota: vdd_uv=%d mV\n", arg_vdd_uv);
 	return 0;
 }
 __setup("vdd_uv=", cpufreq_read_vdd_uv);
