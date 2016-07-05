@@ -17,8 +17,8 @@ BUILD_ROOT_DIR=$BUILD_KERNEL_DIR/..
 BUILD_KERNEL_OUT_DIR=$BUILD_ROOT_DIR/kernel_out/KERNEL_OBJ
 PRODUCT_OUT=$BUILD_ROOT_DIR/kernel_out
 
-BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-gnu-5.3/bin/aarch64-
-# BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-android-6.1-linaro/bin/aarch64-linux-android-
+# BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-gnu-5.3/bin/aarch64-
+BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/linaro-64/bin/aarch64-linux-android-
 BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
 export PATH=$(pwd)/bin:$PATH
@@ -189,8 +189,10 @@ FUNC_BUILD_BOOT_IMAGE()
 	cd "$IMAGE_KITCHEN_DIR"
 	./repackimg.sh
 	cp $IMAGE_KITCHEN_DIR/image-new.img $BOOT_IMAGE_TARGET
+
 	#Remove SEANDROID ENFORCING Message
-	echo -n "SEANDROIDENFORCE" >> $BOOT_IMAGE_TARGET
+#	echo -n "SEANDROIDENFORCE" >> $BOOT_IMAGE_TARGET
+
 	rm -f $IMAGE_KITCHEN_DIR/image-new.img
 
 	if [ ! -f "$BOOT_IMAGE_TARGET" ]; then
