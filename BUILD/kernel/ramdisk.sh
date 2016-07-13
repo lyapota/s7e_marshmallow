@@ -135,9 +135,28 @@ else
 fi
 
 
+if [ ! -e $DIR_SEL/pr_reset_freq.prop ]; then
+	reset_freq="10"
+else
+	val1=`get_sel pr_reset_freq.prop`
+        case $val1 in
+        	1)
+        	  reset_freq="5"
+        	  ;;
+        	2)
+        	  reset_freq="10"
+        	  ;;
+        	3)
+        	  reset_freq="15"
+        	  ;;
+        esac
+fi
+
+
 echo -e "echo \"$little_min\" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;" >> $FILE_SCRIPT;
 echo -e "echo \"$little_max\" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;" >> $FILE_SCRIPT;
 echo -e "echo \"$big_min\" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq;" >> $FILE_SCRIPT;
 echo -e "echo \"$big_max\" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq;" >> $FILE_SCRIPT;
 echo -e "echo \"$gpu_max\" > /sys/devices/14ac0000.mali/max_clock;" >> $FILE_SCRIPT;
+echo -e "echo \"$reset_freq\" > /sys/power/cpufreq_reset_limit_sec;" >> $FILE_SCRIPT;
 cat $FILE_SCRIPT;

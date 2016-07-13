@@ -227,6 +227,22 @@ resexec("scripts/restore.sh");
       "-18.75 mV","",0,
       "-25.00 mV","",0
     );
+      
+
+  #########
+  ## reset freq limit sec
+  #########
+
+    selectbox(
+      "dvfs reset limit",
+      "period to reset freq max/min dinamic limitation",
+      "@apps",
+      "pr_reset_freq.prop",
+
+      " 5 sec","",1,
+      "10 sec","",0,
+      "15 sec","",0
+    );
 
 
 ###################################################################################################################

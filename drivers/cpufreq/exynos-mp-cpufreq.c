@@ -153,9 +153,9 @@ struct pm_qos_request cpufreq_cpu_hotplug_max_request;
 // Reset DVFS
 #ifdef CONFIG_PM
 #ifdef CONFIG_CPU_THERMAL_IPA
-#define DVFS_RESET_SEC 5
+static int reset_limit_sec = 5;
 #else
-#define DVFS_RESET_SEC 15
+static int reset_limit_sec = 15;
 #endif
 static struct delayed_work dvfs_reset_work;
 static struct workqueue_struct *dvfs_reset_wq;
@@ -1491,7 +1491,7 @@ static ssize_t store_cpufreq_min_limit(struct kobject *kobj, struct attribute *a
 	in_worque = false;
 	if (cluster1_input > 0) {
 		queue_delayed_work_on(0, dvfs_reset_wq, &dvfs_reset_work,
-			DVFS_RESET_SEC * HZ);
+			reset_limit_sec * HZ);
 		in_worque = true;
 	}
 
@@ -1588,7 +1588,7 @@ static ssize_t store_cpufreq_max_limit(struct kobject *kobj, struct attribute *a
 	in_worque = false;
 	if (cluster1_input > 0) {
 		queue_delayed_work_on(0, dvfs_reset_wq, &dvfs_reset_work,
-			DVFS_RESET_SEC * HZ);
+			reset_limit_sec * HZ);
 		in_worque = true;
 	}
 
@@ -1604,7 +1604,7 @@ static void dvfs_reset_work_fn(struct work_struct *work)
 
 	if (load <= 25) {
 #endif
-		pr_info("%s++: BOOST timed out(%d)! Resetting with -1\n", __func__, DVFS_RESET_SEC);
+		pr_info("%s++: BOOST timed out(%d)! Resetting with -1\n", __func__, reset_limit_sec);
 
 		save_cpufreq_min_limit(-1);
 		msleep(20);
@@ -1617,9 +1617,37 @@ static void dvfs_reset_work_fn(struct work_struct *work)
 	} else {
 		if (in_worque)
 			queue_delayed_work_on(0, dvfs_reset_wq, &dvfs_reset_work,
-				DVFS_RESET_SEC * HZ);
+				reset_limit_sec * HZ);
 	}
 #endif
+}
+
+static ssize_t show_cpufreq_reset_limit_sec(struct kobject *kobj,
+			     struct attribute *attr, char *buf)
+{
+	return sprintf(buf, "%d\n", reset_limit_sec);
+}
+
+static ssize_t store_cpufreq_reset_limit_sec(struct kobject *kobj, struct attribute *attr,
+			      const char *buf, size_t count)
+{
+	int input;
+
+	if (!sscanf(buf, "%d", &input))
+		return -EINVAL;
+
+	if (input > 0) {
+		reset_limit_sec = input;
+	}
+	else {
+#ifdef CONFIG_CPU_THERMAL_IPA
+		reset_limit_sec = 5;
+#else
+		reset_limit_sec = 15;
+#endif
+	}
+
+	return count;
 }
 #endif
 
@@ -1925,6 +1953,9 @@ static struct global_attr cpufreq_min_limit =
 static struct global_attr cpufreq_max_limit =
 		__ATTR(cpufreq_max_limit, S_IRUGO | S_IWUSR,
 			show_cpufreq_max_limit, store_cpufreq_max_limit);
+static struct global_attr cpufreq_reset_limit_sec =
+		__ATTR(cpufreq_reset_limit_sec, S_IRUGO | S_IWUSR,
+			show_cpufreq_reset_limit_sec, store_cpufreq_reset_limit_sec);
 #endif
 
 #ifdef CONFIG_SW_SELF_DISCHARGING
@@ -2473,6 +2504,12 @@ static int exynos_cpufreq_init(void)
 		pr_err("%s: failed to create cpufreq_max_limit sysfs interface\n", __func__);
 		goto err_cpufreq_max_limit;
 	}
+
+	ret = sysfs_create_file(power_kobj, &cpufreq_reset_limit_sec.attr);
+	if (ret) {
+		pr_err("%s: failed to create cpufreq_reset_limit_sec sysfs interface\n", __func__);
+		goto err_cpufreq_reset_limit_sec;
+	}
 #endif
 
 #ifdef CONFIG_SW_SELF_DISCHARGING
@@ -2501,6 +2538,8 @@ err_cpufreq_self_discharging:
 #endif
 #endif
 #ifdef CONFIG_PM
+err_cpufreq_reset_limit_sec:
+	sysfs_remove_file(power_kobj, &cpufreq_reset_limit_sec.attr);
 err_cpufreq_max_limit:
 	sysfs_remove_file(power_kobj, &cpufreq_min_limit.attr);
 err_cpufreq_min_limit:
@@ -2940,6 +2979,7 @@ static int exynos_mp_cpufreq_remove(struct platform_device *pdev)
 #endif
 
 #ifdef CONFIG_PM
+	sysfs_remove_file(power_kobj, &cpufreq_reset_limit_sec.attr);
 	sysfs_remove_file(power_kobj, &cpufreq_min_limit.attr);
 	sysfs_remove_file(power_kobj, &cpufreq_table.attr);
 	cpufreq_sysfs_remove_group(&mp_attr_group);
