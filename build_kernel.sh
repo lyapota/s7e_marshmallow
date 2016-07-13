@@ -17,14 +17,16 @@ BUILD_ROOT_DIR=$BUILD_KERNEL_DIR/..
 BUILD_KERNEL_OUT_DIR=$BUILD_ROOT_DIR/kernel_out/KERNEL_OBJ
 PRODUCT_OUT=$BUILD_ROOT_DIR/kernel_out
 
-# BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-gnu-5.3/bin/aarch64-
-BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/linaro-64/bin/aarch64-linux-android-
+BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-gnu-5.3/bin/aarch64-
+# BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/linaro-64/bin/aarch64-linux-android-
+# BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-sabermod-7.0/bin/aarch64-
+
 BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
 export PATH=$(pwd)/bin:$PATH
 KERNEL_DEFCONFIG=exynos8890-lyapota_defconfig
 
-KERNEL_VERSION="0.4"
+KERNEL_VERSION="0.5"
 KERNEL_NAME="-lyapota-kernel"
 export LOCALVERSION=${KERNEL_NAME}-v${KERNEL_VERSION}
 
@@ -167,7 +169,7 @@ fi
 	echo ""
 }
 
-IMAGE_KITCHEN_DIR=$BUILD_ROOT_DIR/AIK-Linux
+IMAGE_KITCHEN_DIR=$BUILD_KERNEL_DIR/AIK-Linux
 BOOT_IMAGE_TARGET=$IMAGE_KITCHEN_DIR/boot.img
 
 FUNC_BUILD_BOOT_IMAGE()
@@ -210,7 +212,7 @@ FUNC_BUILD_BOOT_IMAGE()
 }
 
 
-ZIP_FILE_DIR=$BUILD_ROOT_DIR/BUILD
+ZIP_FILE_DIR=$BUILD_KERNEL_DIR/BUILD
 ZIP_NAME=G935F-lyapota-KERNEL-v$KERNEL_VERSION.zip
 ZIP_FILE_TARGET=$ZIP_FILE_DIR/$ZIP_NAME
 
