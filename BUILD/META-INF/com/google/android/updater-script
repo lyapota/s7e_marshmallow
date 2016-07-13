@@ -1,0 +1,81 @@
+# ===========================================
+# updater-script for Prometheus kernel 
+# ===========================================
+# Created by lyapota
+
+set_progress(0.01);
+
+ui_print("@prepare");
+
+    assert(unmount("/data") || ui_print("(unmounted Data partition..)"));
+    assert(unmount("/system") || ui_print("(unmounted System partition..)"));
+
+    ui_print("|-> mount data");
+        run_program("/sbin/mount", "/data");
+
+    ui_print("|-> mount system");
+        run_program("/sbin/mount", "/system");
+
+set_progress(0.02);
+
+###########################Prepare###############################
+show_progress(0.08, "-2000");
+
+    ui_print("|-> clean system");
+	delete_recursive("/system/app/TuiService");
+	delete_recursive("/system/app/mcRegistry");
+	delete_recursive("/system/kern_sec_info1");
+	delete_recursive("/system/kern_sec_info2");
+	delete_recursive("/system/kern_sec_info3");
+	delete_recursive("/system/kern_sec_info4");
+	delete_recursive("/system/lkm_sec_info");
+	delete_recursive("/system/tima_measurement_info");
+
+	delete_recursive("/system/app/mcRegistry");
+        package_extract_dir("system/app", "/system/app");
+        set_metadata_recursive("/system/app/mcRegistry", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644);
+
+    ui_print("|-> extract kernel");
+        package_extract_dir("kernel", "/tmp");
+        set_metadata_recursive("/tmp", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
+
+set_progress(0.10);
+show_progress(0.60, "-6000");
+
+##############################Tuning#############################
+
+ui_print("@install");
+
+##Kernel image
+    ui_print("@build kernel");
+      ui_print("|-> unpack");
+        run_program("/tmp/unpack.sh");
+
+      ui_print("|-> setup command line");
+        run_program("/tmp/cmdline.sh");
+
+set_progress(0.70);
+show_progress(0.10, "-2000");
+
+      ui_print("|-> setup ramdisk");
+        run_program("/tmp/ramdisk.sh");
+
+      ui_print("|-> pack");
+        run_program("/tmp/pack.sh");
+
+set_progress(0.80);
+show_progress(0.20, "-4000");
+
+    ui_print("@flash kernel");
+        run_program("/tmp/busybox", "dd", "if=/tmp/boot.img", "of=/dev/block/platform/155a0000.ufs/by-name/BOOT");
+
+###########################Finish############################
+
+ui_print("");
+ui_print("@installation complete!");
+
+###########################Unmounting###########################
+run_program("/sbin/sleep", "2");
+unmount("/system");
+
+set_progress(1.0);

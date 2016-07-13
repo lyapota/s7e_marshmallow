@@ -1,0 +1,4 @@
+<@center><b><#selectbg_g>Terms of Use</#></b>
+Prometheus kernel completely free for using. You can flash it, builtin ROMs, or use sources of it on you decision. As any custom softwere made in free time, this can contains bugs. After flash zip file you can get bootloop or hanging your device if your ROM not meet the requirements.
+
+<#c00><b>Read please technical requirements on next page!</b></#>

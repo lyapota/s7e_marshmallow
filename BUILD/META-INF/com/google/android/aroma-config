@@ -1,0 +1,273 @@
+### LICENSE:
+#
+# Copyright (C) 2011 Ahmad Amarullah ( http://amarullz.com/ )
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+### FILE INFO:
+#
+# AROMA Installer 2.70RC2 - AROMA Installer Test Script Configuration
+#       (c) 2011-2014 by Ahmad Amarullah
+#           amarullz - xda-developers
+#           http://www.amarullz.com/
+#
+#       Binary Version  : 2.70RC2
+#       Binary Codename : FLAMBOYAN
+#
+### INFO:
+#
+# * AROMA Resource Dir  = META-INF/com/google/android/aroma
+#
+# * AROMA Temporary Dir = /tmp/aroma/
+#
+# * About Icon          = @alert - show <AROMA Resource Dir>/@alert.png
+#                         or if theme used it will find <themedir>/icon.alert.png
+#                         you can still access it via "@alert"
+#
+# * dp                  = Device Pixelate. WVGA/QHD = 3, HVGA = 2.
+#                         dp calculated with = round(min(width,height) / 160)
+#
+
+ini_set("rom_name",             "Prometheus");
+ini_set("rom_version",          "0.5");
+ini_set("rom_author",           "lyapota");
+ini_set("rom_device",           "Samsung SM-G935F");
+ini_set("rom_date",             "14 July 2016");
+
+ini_set("force_colorspace", "rgba");
+
+fontresload( "0", "ttf/DroidSans.ttf", "12" );
+fontresload( "1", "ttf/DroidSans.ttf", "18" );
+
+# Show Simple Splash
+
+splash(4000, "lyapota");
+
+theme("sense");
+
+###################################################################################################################
+#
+# STEP 1 - SHOW INFORMATION
+#
+viewbox(
+  #-- Title
+  #-- Text
+    "Welcome",
+    "\n\n\n\n\n"+
+    "You're about to flash:\n"+
+    ini_get("rom_name") + " for " + ini_get("rom_device") +  "\n\n\n"+
+    "  VERSION\t: <b><#selectbg_g>"+ini_get("rom_version")+"</#></b>\n"+
+    "  UPDATED\t: <b><#selectbg_g>"+ini_get("rom_date")+"</#></b>\n\n\n"+
+    "Press <b>Next</b> to continue the installation...",
+  #-- Icon
+    "@welcome"
+);
+
+###################################################################################################################
+#
+# STEP 2 - TERMS OF USE AND REQUIREMENTS
+#
+agreebox(
+  #-- Title
+    "Important notes!",
+
+  #-- Subtitle / Description
+    "",
+
+  #-- Icon
+    "@agreement",
+
+  #-- Text Content ( Read from <AROMA Resource Dir>/read_me.txt )
+    resread("gnu.txt"),
+
+  #-- Checkbox Text
+    "I agree with these Terms of Use.",
+
+  #-- Unchecked Alert Message
+    "You need to agree with the Terms of Use..."
+);
+  
+if
+  confirm(
+    # Arg 1
+    "Requirements!",
+  
+    # Arg 2
+    resread("read_me.txt"),
+
+    # Arg 3
+    "@confirm",
+
+    # Arg 4
+    "Yes",
+
+    # Arg 5
+    "No"
+
+  ) == "no"
+
+then
+  exit();
+endif;
+	
+#Restore prev installation config
+resexec("scripts/restore.sh");
+
+###################################################################################################################
+#
+# STEP 3 - SELECT APPLICATIONS
+#
+
+###################################################################################################################
+#
+# STEP 4 - SETUP INSTALLATION
+#
+
+  #########
+  ## LITTLE CPU claster
+  #########
+
+    selectbox(
+      "LITTLE(A53) CLASTER",
+      "select <b>MIN</b> APPOLO frequence",
+      "@apps",
+      "pr_little_min.prop",
+
+      "338 MHz","",0,
+      "442 MHz","",0,
+      "546 MHz","",1,
+      "650 MHz","",0,
+      "754 MHz","",0
+    );
+
+    selectbox(
+      "LITTLE(A53)",
+      "select <b>MAX</b> APPOLO frequence",
+      "@apps",
+      "pr_little_max.prop",
+
+      "1.586 GHz","",0,
+      "1.690 GHz","",0,
+      "1.794 GHz","",1,
+      "1.898 GHz","",0,
+      "1.976 GHz","",0
+    );
+
+  #########
+  ## BIG CPU claster
+  #########
+
+    selectbox(
+      "BIG(M1)",
+      "select <b>MIN</b> MONGOOSE frequence",
+      "@apps",
+      "pr_big_min.prop",
+
+      "312 MHz","",0,
+      "416 MHz","",0,
+      "520 MHz","",1,
+      "624 MHz","",0,
+      "728 MHz","",0
+    );
+
+    selectbox(
+      "BIG(M1)",
+      "select <b>MAX</b> MONGOOSE frequence",
+      "@apps",
+      "pr_big_max.prop",
+
+      "2.5 GHz","",0,
+      "2.6 GHz","",0,
+      "2.7 GHz","",1,
+      "2.8 GHz","",0,
+      "2.9 GHz","",0
+    );
+
+  #########
+  ## GPU
+  #########
+
+    selectbox(
+      "GPU(G3D)",
+      "select <b>MAX</b> Mali-T88x frequence",
+      "@apps",
+      "pr_gpu_max.prop",
+
+      "546 MHz","",0,
+      "600 MHz","",0,
+      "650 MHz","",1,
+      "702 MHz","",0,
+      "806 MHz","",0
+    );
+      
+
+  #########
+  ## Under Volting
+  #########
+
+    selectbox(
+      "vdd CLOCKS uV",
+      "total vdd undervolting <b>6.25mV * N</b>",
+      "@apps",
+      "pr_vdd_uv.prop",
+
+      " hardware","",1,
+      " -6.25 mV","",0,
+      "-12.50 mV","",0,
+      "-18.75 mV","",0,
+      "-25.00 mV","",0
+    );
+
+
+###################################################################################################################
+#
+# STEP 5 - INSTALLING
+#
+viewbox(
+  "ready to install",
+  "all informations has been collected for installation.\n\n"+
+  "press <b>Next</b> to start the installation..."+
+  "if you want to review or change any of your installation settings, press <b>Back</b>.",
+  "@info"
+);
+
+setvar("retstatus",
+install(
+  "installing",
+  "installing <b>" + ini_get("rom_name") + " " + ini_get("rom_version") + "</b>" +
+  "...\nplease wait until it's finished...",
+  "@install")
+);
+
+#set Next text fo Finish
+ini_set("text_next", "Finish");
+
+if getvar("retstatus")=="0" then
+      #Save installation config
+      resexec("scripts/save.sh");
+
+      viewbox(
+              "installation Completed",
+              "<#080>Congratulations...</#>\n\n"+
+        ini_get("rom_name") + " " + ini_get("rom_version") + " has been installed successfully.\n\n"+
+              "tap Finish, and Reboot your device.\n\nThanks.",
+              "@info"
+      );
+else
+      viewbox(
+           "installation failed",
+           "\n\ninstaller status: "+ getvar("retstatus"),
+           "@alert"
+      );
+endif;
+
