@@ -99,13 +99,13 @@ else
         	  big_max="2600000"
         	  ;;
         	3)
-        	  big_max="2700000"
+        	  big_max="2704000"
         	  ;;
         	4)
-        	  big_max="2800000"
+        	  big_max="2808000"
         	  ;;
         	5)
-        	  big_max="2900000"
+        	  big_max="2912000"
         	  ;;
         esac
 fi
