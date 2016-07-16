@@ -630,8 +630,8 @@ static int dvfsg3d_get_asv_table(unsigned int *table)
 	for (lv = 0; lv < max_lv; lv++)
 		table[lv] = get_asv_voltage(cal_asv_dvfs_g3d, lv) - asv_vol_step * arg_vdd_uv;
 
-	if (table[1] + (asv_vol_step * 8) < 850000)
-	        table[0] = table[1] + (asv_vol_step * 8);
+	if (table[1] + (asv_vol_step * 6) < 850000)
+	        table[0] = table[1] + (asv_vol_step * 6);
 	else
 	        table[0] = 850000;
 
