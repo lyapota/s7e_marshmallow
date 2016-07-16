@@ -4,11 +4,10 @@
 # ========================================
 # Created by lyapota
 
-cd /tmp
 echo "unpack boot.img"
-/tmp/bbootimg -x boot.img bootimg.cfg zImage initrd.img second.img dt.img
+mv -f /tmp/boot.img /tmp/AIK
 
-echo "unpack ramdisk content"
-  mkdir initrd
-  cd initrd
-  cat /tmp/initrd.img | gunzip | cpio -vid
+cd /tmp/AIK
+chmod 755 unpackimg.sh;
+./unpackimg.sh boot.img
+rm -f boot.img

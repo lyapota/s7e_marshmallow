@@ -39,10 +39,10 @@
 #
 
 ini_set("rom_name",             "Prometheus");
-ini_set("rom_version",          "0.5");
+ini_set("rom_version",          "0.6");
 ini_set("rom_author",           "lyapota");
 ini_set("rom_device",           "Samsung SM-G935F");
-ini_set("rom_date",             "15 July 2016");
+ini_set("rom_date",             "16 July 2016");
 
 ini_set("force_colorspace", "rgba");
 
@@ -143,9 +143,9 @@ resexec("scripts/restore.sh");
       "@apps",
       "pr_little_min.prop",
 
-      "338 MHz","",0,
+      "338 MHz","",1,
       "442 MHz","",0,
-      "546 MHz","",1,
+      "546 MHz","",0,
       "650 MHz","",0,
       "754 MHz","",0
     );
@@ -158,9 +158,10 @@ resexec("scripts/restore.sh");
 
       "1.586 GHz","",0,
       "1.690 GHz","",0,
-      "1.794 GHz","",1,
-      "1.898 GHz","",0,
-      "1.976 GHz","",0
+      "1.794 GHz","",1
+#      ,
+#      "1.898 GHz","",0,
+#      "1.976 GHz","",0
     );
 
   #########
@@ -173,9 +174,9 @@ resexec("scripts/restore.sh");
       "@apps",
       "pr_big_min.prop",
 
-      "312 MHz","",0,
+      "312 MHz","",1,
       "416 MHz","",0,
-      "520 MHz","",1,
+      "520 MHz","",0,
       "624 MHz","",0,
       "728 MHz","",0
     );
@@ -188,9 +189,10 @@ resexec("scripts/restore.sh");
 
       "2.5 GHz","",0,
       "2.6 GHz","",0,
-      "2.7 GHz","",1,
-      "2.8 GHz","",0,
-      "2.9 GHz","",0
+      "2.7 GHz","",1
+#      ,
+#      "2.8 GHz","",0,
+#      "2.9 GHz","",0
     );
 
   #########
@@ -205,8 +207,8 @@ resexec("scripts/restore.sh");
 
       "546 MHz","",0,
       "600 MHz","",0,
-      "650 MHz","",1,
-      "702 MHz","",0,
+      "650 MHz","",0,
+      "702 MHz","",1,
       "806 MHz","",0
     );
       

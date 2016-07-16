@@ -42,6 +42,6 @@ fi
 ############
 ##set kernel new command line
 echo "patch kernel command line"
-cd /tmp
-/tmp/busybox sed -i "s/vdd_uv=0/$vdd_uv/" /tmp/zImage
+cd /tmp/AIK/split_img
+/tmp/busybox sed -i "s/vdd_uv=0/$vdd_uv/" boot.img-zImage
 

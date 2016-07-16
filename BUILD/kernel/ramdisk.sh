@@ -5,7 +5,7 @@
 # Created by lyapota
 
 DIR_SEL=/tmp/aroma
-FILE_SCRIPT=/tmp/initrd/sbin/kernel_params.sh
+FILE_SCRIPT=/tmp/AIK/ramdisk/sbin/kernel_params.sh
 
 get_sel()
 {

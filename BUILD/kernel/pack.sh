@@ -4,21 +4,14 @@
 # ========================================
 # Created by lyapota
 
-cd /tmp/initrd
-echo "pack modified ramdisk"
-find . | cpio --create --format='newc' | gzip > /tmp/newinitrd.img
-
-
-################
-## pack boot.img
-cd /tmp
-rm -f boot.img
 echo "pack boot.img"
-if [ -e /tmp/newinitrd.img ]; then
-	/tmp/bbootimg --create boot.img -f bootimg.cfg -k zImage -r newinitrd.img -d dt.img
-else
-	/tmp/bbootimg --create boot.img -f bootimg.cfg -k zImage -r initrd.img -d dt.img  
-fi
+cd /tmp/AIK
+
+chmod 755 repackimg.sh;
+./repackimg.sh
+
+mv -f /tmp/AIK/image-new.img /tmp/boot.img
+cd /tmp
 
 #Remove SEANDROID ENFORCING Message
 echo -n "SEANDROIDENFORCE" >> boot.img
