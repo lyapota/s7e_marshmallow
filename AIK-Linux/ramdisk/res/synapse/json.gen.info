@@ -1,0 +1,116 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:"INFO",
+    elements:[
+	{ SPane:{
+		title:"Kernel Build by",
+		description:" lyapota"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Kernel Thread",
+		description:" <a href='http://forum.xda-developers.com/s7-edge/development'>XDA Developers Forum</a>"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"If you feel like supporting us",
+		description:""
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Source and Credits",
+		description:" Modified & compiled from Samsung OSRC: <a href='https://github.com/lyapota/s7e_marshmallow'>GitHub</a>."
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Thoughts"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Kernel Version"
+	}},
+	{ SLiveLabel:{
+		refresh:10000,
+		action:"default version"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Build"
+	}},
+	{ SLiveLabel:{
+		refresh:10000,
+		action:"default build"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Android Version"
+	}},
+	{ SLiveLabel:{
+		refresh:10000,
+		action:"default android_version"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Build Date"
+	}},
+	{ SLiveLabel:{
+		refresh:10000,
+		action:"default date"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Baseband"
+	}},
+	{ SLiveLabel:{
+		refresh:10000,
+		action:"default baseband"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Bootloader"
+	}},
+	{ SLiveLabel:{
+		refresh:10000,
+		action:"default bootloader"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Serial"
+	}},
+	{ SLiveLabel:{
+		refresh:10000,
+		action:"default serial"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+    ]
+}
+CTAG

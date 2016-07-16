@@ -1,0 +1,120 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:"ABOUT",
+    elements:[
+    	{ SLiveLabel:{
+		description:"\n",
+		refresh:10000000,
+		action:"echo Hello"
+	}},
+	{ SLiveLabel:{
+		refresh:10000000,
+		style:"bold",
+		action:"echo Welcome to the S7 Prometheus kernel"
+	}},
+    	{ SLiveLabel:{
+		refresh:10000000,
+		action:"echo by"
+	}},
+    	{ SLiveLabel:{
+		refresh:10000000,
+		style:"bold",
+		action:"echo lyapota"
+	}},
+	{ SSpacer:{
+		height:2
+	}},
+	{ SPane:{
+		title:"Up Time:"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SLiveLabel:{
+		refresh:1500,
+		action:"live LiveUpTime"
+	}},
+	{ SSpacer:{
+		height:2
+	}},
+	{ SPane:{
+		title:"CPU Temperature:"
+	}},
+	{ SLiveLabel:{
+		refresh:1000,
+		action:"live temp"
+	}},
+	{ SSpacer:{
+		height:2
+	}},
+	{ SPane:{
+		title:"Memory:"
+	}},
+	{ SLiveLabel:{
+		refresh:3000,
+		style:italic,
+		action:"live LiveMemory"
+	}},
+	{ SSpacer:{
+		height:2
+	}},
+	{ SPane:{
+		title:"Battery Temperature:"
+	}},
+	{ SLiveLabel:{
+		refresh:3000,
+		style:italic,
+		action:"live batttemp"
+	}},
+	{ SSpacer:{
+		height:2
+	}},
+	{ SPane:{
+		title:"Battery Health:"
+	}},
+	{ SLiveLabel:{
+		refresh:3000,
+		style:italic,
+		action:"live batthealth"
+	}},
+	{ SSpacer:{
+		height:2
+	}},
+	{ SPane:{
+		title:"Battery Status:"
+	}},
+	{ SLiveLabel:{
+		refresh:3000,
+		style:italic,
+		action:"live battstatus"
+	}},
+	{ SSpacer:{
+		height:2
+	}},
+	{ SPane:{
+		title:"Battery Capacity:"
+	}},
+	{ SLiveLabel:{
+		refresh:3000,
+		style:italic,
+		action:"live battcapa"
+	}},
+	{ SSpacer:{
+		height:2
+	}},
+	{ SPane:{
+		title:"Battery Voltage:"
+	}},
+	{ SLiveLabel:{
+		refresh:3000,
+		style:italic,
+		action:"live battvoltnow"
+	}},
+    ]
+}
+CTAG
+    ]
+}
+CTAG

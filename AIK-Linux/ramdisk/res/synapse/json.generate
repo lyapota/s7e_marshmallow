@@ -1,0 +1,24 @@
+#!/system/bin/sh
+
+cat << CTAG
+
+{
+    sections: [
+                `. /res/synapse/json.gen.myabout`
+		`. /res/synapse/json.gen.cpu_stats`,
+		`. /res/synapse/json.gen.little`
+		`. /res/synapse/json.gen.big`
+		`. /res/synapse/json.gen.boost`,
+                `. /res/synapse/json.gen.cpugov`
+		`. /res/synapse/json.gen.memory`
+		`. /res/synapse/json.gen.gpu`
+		`. /res/synapse/json.gen.zram`
+		`. /res/synapse/json.gen.bprop`
+		`. /res/synapse/json.gen.logs`
+                `. /res/synapse/json.gen.reboot`
+                `. /res/synapse/json.gen.info`
+    ]
+
+}
+CTAG
+

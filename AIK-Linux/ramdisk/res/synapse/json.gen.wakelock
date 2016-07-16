@@ -1,0 +1,55 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:WAKELOCK CONTROL,
+    elements:[
+      	{ SPane:{
+		title:"Wakelock control",
+		description:" Manage wakelock for drivers."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SDescription:{
+		description:"WARNING: Disabling of wakelocks may have impact on various ROM features or apps such as S-Health & Google Fit."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		title:"SensorHub",
+		description:" The SensorHub Wakelock is one of the biggest wake sources. Disable for better deep sleep and less awake time. Enable for stock behavior.\n",
+		default:`cat /sys/module/wakeup/parameters/enable_sensorhub_wl`,
+		action:"generic /sys/module/wakeup/parameters/enable_sensorhub_wl",
+		values:{ Y:"Enabled", N:"Disabled"
+		}	
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		title:"SSP",
+		description:" The SSP Wakelock is one of the biggest wake sources after Sensorhub. Disable for better deep sleep and less awake time. Enable for stock behavior.\n",
+		default:`cat /sys/module/wakeup/parameters/enable_ssp_wl`,
+		action:"generic /sys/module/wakeup/parameters/enable_ssp_wl",
+		values:{ Y:"Enabled", N:"Disabled"
+		}
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		title:"bcm4773",
+		description:" The bcm4773 Wakelock (GPS chip) is one of the biggest wake sources after Sensorhub & SSP. Disable for better deep sleep and less awake time. Enable for stock behavior.\n",
+		default:`cat /sys/module/wakeup/parameters/enable_bcm4773_wl`,
+		action:"generic /sys/module/wakeup/parameters/enable_bcm4773_wl",
+		values:{ Y:"Enabled", N:"Disabled"
+		}
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+    ]
+}
+CTAG

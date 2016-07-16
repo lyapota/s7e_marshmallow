@@ -1,0 +1,65 @@
+#!/system/bin/sh
+
+cat << CTAG
+{
+    name:ZRAM,
+    elements:[
+			`if [ -f "/sys/devices/virtual/block/zram0/disksize" ]; then
+			ZRAM=\`$BB cat /sys/devices/virtual/block/zram0/disksize\`;
+			ZRAM=$((ZRAM / 1024 / 1024));
+			$BB echo '{ SPane:{
+				title:"ZRAM",
+				description:"Attempts to increase performance by avoiding paging on physical storage, instead using a compressed virtual device in RAM. Paging takes place in RAM until it is necessary to use the swap space on physical storage."
+			}},
+				{ SSeekBar:{
+					unit:" MB",
+					step:1,
+					min:0,
+					max:1024, 
+					default:'$ZRAM',
+					action:"zram /sys/devices/virtual/block/zram0/disksize"
+				}},'
+			fi`
+			`if [ -f "/sys/block/zram0/max_comp_streams" ]; then
+			MCS=\`$BB cat /sys/block/zram0/max_comp_streams\`;
+				$BB echo '{ SSeekBar:{
+					title:"Max Compression Streams",
+					description:"Applying a different option will reset Z-RAM. Can have N write operations (depending on size of streams list) executing in parallel.",
+					min:1,
+					max:5,
+					step:1,
+					default:'$MCS',
+					action:"generic /sys/block/zram0/max_comp_streams",
+					notify:[
+						{
+							on:APPLY,
+							do:[ RESET, REFRESH, APPLY ],
+							to:"zram /sys/devices/virtual/block/zram0/disksize"
+						}
+					]
+				}},'
+			fi`    
+	{ SPane:{
+		title:"panic",
+		description:" Set to zero to have the kernel loop on a panic or auto-reboot after this number of seconds. Default is 1.",
+	}},
+	{ SSeekBar:{
+		max:30,
+		min:0,
+		step:1,
+		unit:" s",
+		default:`cat /proc/sys/kernel/panic`,
+		action:"generic /proc/sys/kernel/panic",
+	}},
+	{ SPane:{
+		title:"panic_on_oops",
+		description:" Disable to have the kernel continue operations after a software failure. Default is Enabled.",
+	}},
+	{ SCheckBox:{
+		label:"Enable or Disable panic_on_oops",
+		default:`cat /proc/sys/kernel/panic_on_oops`,
+		action:"generic /proc/sys/kernel/panic_on_oops",
+    }},
+    ]
+}
+CTAG

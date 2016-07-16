@@ -1,0 +1,38 @@
+#!/system/bin/sh
+
+cat << CTAG
+{
+    name:POWER SUSPEND,
+    elements:[
+	{ SPane:{
+		title:"PowerSuspend",
+		description:"PowerSuspend driver is a replacement for the early_suspend/late_resume driver"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		default:1,
+		action:"generic /sys/kernel/power_suspend/power_suspend_mode",
+		values:{
+			1:"Userspace", 2:"DisplayPanel"
+		}
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		title:"PowerSuspend State",
+		description:"Kernel power management driver when screen is off. If using Userspace hook, enable for better battery savings. Note: You can only change this setting with Userspace mode\n",
+		default:1,
+		action:"suspend_state /sys/kernel/power_suspend/power_suspend_state",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+    ]
+}
+CTAG

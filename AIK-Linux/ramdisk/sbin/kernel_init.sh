@@ -9,6 +9,17 @@ $BB mount -o remount,rw /system;
 # Set SELinux permissive by default
 setenforce 0
 
+# Make internal storage directory.
+if [ ! -d /data/prometheus ]; then
+	mkdir /data/prometheus
+fi;
+
+# Synapse
+$BB mount -t rootfs -o remount,rw rootfs
+$BB chmod -R 755 /res/*
+$BB ln -fs /res/synapse/uci /sbin/uci
+/sbin/uci
+
 # default kernel params
 /sbin/kernel_params.sh
 

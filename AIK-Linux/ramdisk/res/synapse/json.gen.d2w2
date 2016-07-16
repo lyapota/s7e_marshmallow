@@ -1,0 +1,47 @@
+#!/system/bin/sh
+
+cat << CTAG
+{
+    name:D2W-S2S,
+    elements:[
+	{ SPane:{
+		title:"Screen Wake Functions",
+		description:" Choose to Wake Up your Screen by double tapping on the screen. Default is Disabled.",
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		title:"DoubleTap To Wake",
+		default:`cat /sys/android_touch/doubletap2wake`,
+		action:"generic /sys/android_touch/doubletap2wake",
+		values:{
+			`PROF='0:"Disabled", 1:"d2w"'
+			echo $PROF`
+		}
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Screen Sleep Functions",
+		description:" Allows you to turn the screen off by swiping the screen just above the HOME key from right > left (or) left > right. Default is Disabled.",
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		title:"Sweep To Sleep",
+		default:`cat /sys/sweep2sleep/sweep2sleep`,
+		action:"generic /sys/sweep2sleep/sweep2sleep",
+		values:{
+			`PROF='0:"Disabled", 1:"Enabled"'
+			echo $PROF`
+		}
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+    ]
+}
+CTAG

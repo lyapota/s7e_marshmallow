@@ -1,0 +1,33 @@
+# By UpInTheAir for SkyHigh kernels
+# Thanks to dorimanx & pelya
+
+BB=/sbin/busybox;
+
+case $1 in
+usb_keyboard)
+  $BB mount -t rootfs -o remount,rw rootfs;
+  P=/res/synapse/SkyHigh/keyboard
+  if [ ! -z $2 ]; then
+  if [ $2 == Disabled ]; then
+    echo 0 > $P
+	echo "0" > /sys/class/android_usb/android0/enable;
+	echo "0" > /sys/module/g_android/parameters/usb_keyboard;
+	echo "mtp,adb" > /sys/class/android_usb/android0/functions;
+	echo "1" > /sys/class/android_usb/android0/enable;
+  elif [ $2 == Enabled ]; then
+    echo 1 > $P
+	echo "0" > /sys/class/android_usb/android0/enable;
+	echo "1" > /sys/module/g_android/parameters/usb_keyboard;
+	echo "mtp,adb,hid" > /sys/class/android_usb/android0/functions;
+	echo "1" > /sys/class/android_usb/android0/enable;
+	$BB chmod 777 /dev/hidg*
+  fi; fi
+  copy=`cat $P`
+  if [ $copy == 0 ]; then
+    echo Disabled
+  elif [ $copy == 1 ]; then
+    echo Enabled
+  fi
+  $BB mount -t rootfs -o remount,ro rootfs;
+  ;;
+esac

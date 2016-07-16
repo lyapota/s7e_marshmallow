@@ -1,0 +1,63 @@
+BB=/sbin/busybox;
+
+# From Darky's zipalign - Modified to make it actually work.
+# Modded by Dorimanx.
+# (30/08/2014) Integrate into SkyHigh Kernel for Synapse Push-Button support - UpInTheAir@XDA
+
+# Zipalign file location
+ZIPALIGNDB=/sdcard/SkyHigh/Logs/zipalign.db;
+
+# Log file location
+LOG_FILE=/sdcard/SkyHigh/Logs/zipalign.txt;
+
+case $1 in
+  zipalign)
+
+	if [ `pgrep -f "zipalign" | wc -l` \< 5 ]; then
+		echo "Starting zipalign, it's will take 2 min to finish, please wait.";
+		sleep 3;
+
+		$BB mount -o remount,rw /data;
+
+		if [ -e $LOG_FILE ]; then
+			rm -f $LOG_FILE;
+		fi;
+
+		if [ -e $ZIPALIGNDB ]; then
+			rm -f $ZIPALIGNDB;
+		fi;
+
+		if [ ! -f $ZIPALIGNDB ]; then
+			touch $ZIPALIGNDB;
+		fi;
+
+		echo "Starting Automatic ZipAlign $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $LOG_FILE;
+		for DIR in /data/app; do
+			cd $DIR;
+			for APK in *.apk; do
+				if [ $APK -ot $ZIPALIGNDB ] && [ $(grep "$DIR/$APK" $ZIPALIGNDB | wc -l) -gt 0 ]; then
+					echo "Already checked: $DIR/$APK" | tee -a $LOG_FILE;
+				else
+					ZIPCHECK=`/sbin/zipalign -c -v 4 $APK | grep FAILED | wc -l`;
+
+					if [ $ZIPCHECK -eq "1" ]; then
+						echo "Now aligning: $DIR/$APK" | tee -a $LOG_FILE;
+						/sbin/zipalign -v -f 4 $APK /data/local/$APK;
+						cp -f -p /data/local/$APK $APK;
+						grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB;
+					else
+						echo "Already aligned: $DIR/$APK" | tee -a $LOG_FILE;
+						grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB;
+					fi;
+				fi;
+			done;
+		done;
+
+		touch $ZIPALIGNDB;
+		echo "Automatic ZipAlign finished at $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $LOG_FILE;
+		mv /data/local/*.apk /data/app/
+		chown system:system /data/app/*
+		chmod 644 /data/app/*
+	fi;
+  ;;
+esac

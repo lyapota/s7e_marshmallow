@@ -1,0 +1,50 @@
+#!/system/bin/sh
+
+cat << CTAG
+{
+    name:D2S,
+    elements:[
+	{ SPane:{
+		title:"Screen Sleep Functions",
+		description:" Choose to lock your Screen by either double tapping on the screen or swiping from left-right right-to left in the bottom of your screen.",
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		title:"DoubleTap To Sleep- This option only works if powersuspend is set in userspace mode and the Powersuspend state is Enabled",
+		default:`cat /sys/android_touch/doubletap2wake`,
+		action:"generic /sys/android_touch/doubletap2wake",
+		values:{
+			`PROF='0:"Disabled", 1:"d2s"'
+			echo $PROF`
+		}
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		title:"Sweep To Sleep- This option only works if powersuspend is set to display mode",
+		default:`cat /sys/sweep2sleep/sweep2sleep`,
+		action:"generic /sys/sweep2sleep/sweep2sleep",
+		values:{
+			`PROF='0:"Disabled", 1:"Enabled"'
+			echo $PROF`
+		}
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		title:"Disable Touchkeys",
+		description:"Completely disable touchkey events.\n",
+		default:$(echo "$(/res/synapse/actions/touchkey tk_disable)"),
+		action:"touchkey tk_disable",
+		values:[Disabled, Enabled,]
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+    ]
+}
+CTAG
