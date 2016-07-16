@@ -143,11 +143,12 @@ resexec("scripts/restore.sh");
       "@apps",
       "pr_little_min.prop",
 
-      "338 MHz","",1,
-      "442 MHz","",0,
-      "546 MHz","",0,
-      "650 MHz","",0,
-      "754 MHz","",0
+      "338 MHz","",0,
+      "442 MHz","stock",1,
+      "546 MHz","",0
+#      ,
+#      "650 MHz","",0,
+#      "754 MHz","",0
     );
 
     selectbox(
@@ -156,9 +157,9 @@ resexec("scripts/restore.sh");
       "@apps",
       "pr_little_max.prop",
 
-      "1.586 GHz","",0,
+      "1.586 GHz","stock",1,
       "1.690 GHz","",0,
-      "1.794 GHz","",1
+      "1.794 GHz","",0
 #      ,
 #      "1.898 GHz","",0,
 #      "1.976 GHz","",0
@@ -174,11 +175,11 @@ resexec("scripts/restore.sh");
       "@apps",
       "pr_big_min.prop",
 
-      "312 MHz","",1,
+      "312 MHz","",0,
       "416 MHz","",0,
       "520 MHz","",0,
       "624 MHz","",0,
-      "728 MHz","",0
+      "728 MHz","stock",1
     );
 
     selectbox(
@@ -186,10 +187,11 @@ resexec("scripts/restore.sh");
       "select <b>MAX</b> MONGOOSE frequence",
       "@apps",
       "pr_big_max.prop",
-
+      "2.3 GHz","stock",1,
+      "2.4 GHz","",0,
       "2.5 GHz","",0,
       "2.6 GHz","",0,
-      "2.7 GHz","",1
+      "2.7 GHz","",0
 #      ,
 #      "2.8 GHz","",0,
 #      "2.9 GHz","",0
@@ -207,8 +209,8 @@ resexec("scripts/restore.sh");
 
       "546 MHz","",0,
       "600 MHz","",0,
-      "650 MHz","",0,
-      "702 MHz","",1,
+      "650 MHz","stock",1,
+      "702 MHz","",0,
       "806 MHz","",0
     );
       
@@ -223,7 +225,7 @@ resexec("scripts/restore.sh");
       "@apps",
       "pr_vdd_uv.prop",
 
-      " hardware","",1,
+      " ASV","stock",1,
       " -6.25 mV","",0,
       "-12.50 mV","",0,
       "-18.75 mV","",0,
@@ -236,12 +238,12 @@ resexec("scripts/restore.sh");
   #########
 
     selectbox(
-      "dvfs reset limit",
-      "period to reset freq max/min dinamic limitation",
+      "dvfs reset",
+      "period to reset dinamic freq (max/min) limitation",
       "@apps",
       "pr_reset_freq.prop",
 
-      " 5 sec","",1,
+      " 5 sec","default",1,
       "10 sec","",0,
       "15 sec","",0
     );

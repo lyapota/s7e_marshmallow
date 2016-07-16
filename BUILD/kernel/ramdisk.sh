@@ -93,18 +93,24 @@ else
 	val1=`get_sel pr_big_max.prop`
         case $val1 in
         	1)
-        	  big_max="2496000"
+        	  big_max="2288000"
         	  ;;
         	2)
-        	  big_max="2600000"
+        	  big_max="2392000"
         	  ;;
         	3)
-        	  big_max="2704000"
+        	  big_max="2496000"
         	  ;;
         	4)
-        	  big_max="2808000"
+        	  big_max="2600000"
         	  ;;
         	5)
+        	  big_max="2704000"
+        	  ;;
+        	6)
+        	  big_max="2808000"
+        	  ;;
+        	7)
         	  big_max="2912000"
         	  ;;
         esac
