@@ -12,6 +12,7 @@ cat << CTAG
                 `. /res/synapse/json.gen.cpugov`
 		`. /res/synapse/json.gen.memory`
 		`. /res/synapse/json.gen.gpu`
+		`. /res/synapse/json.gen.powersuspend`
 		`. /res/synapse/json.gen.uksm`
 		`. /res/synapse/json.gen.zram`
 		`. /res/synapse/json.gen.bprop`
