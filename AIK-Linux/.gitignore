@@ -1,4 +1,4 @@
 ramdisk-new.cpio.gz
-boot.img
+boot*.img
 split_img/boot.img-dtb
 split_img/boot.img-zImage
