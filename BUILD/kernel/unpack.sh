@@ -4,6 +4,8 @@
 # ========================================
 # Created by lyapota
 
+DIR_SEL=/tmp/aroma
+
 get_sel()
 {
   sel_file=$DIR_SEL/$1
