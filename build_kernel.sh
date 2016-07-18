@@ -8,14 +8,12 @@ if [ x$1 = x ]
 then MODEL=hero2lte
 fi
 
-VARIANT=xx
 ARCH=arm64
 
 BUILD_WHERE=$(pwd)
 BUILD_KERNEL_DIR=$BUILD_WHERE
 BUILD_ROOT_DIR=$BUILD_KERNEL_DIR/..
-BUILD_KERNEL_OUT_DIR=$BUILD_ROOT_DIR/kernel_out/KERNEL_OBJ
-PRODUCT_OUT=$BUILD_ROOT_DIR/kernel_out
+BUILD_KERNEL_OUT_DIR=$BUILD_ROOT_DIR/kernel_out/KERNEL_OBJ-"$MODEL"
 
 BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-gnu-5.3/bin/aarch64-
 # BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/linaro-64/bin/aarch64-linux-android-
@@ -24,70 +22,45 @@ BUILD_CROSS_COMPILE=/home/lyapota/kernel/toolchain/aarch64-linux-gnu-5.3/bin/aar
 BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
 export PATH=$(pwd)/bin:$PATH
-KERNEL_DEFCONFIG=exynos8890-lyapota_defconfig
 
 KERNEL_VERSION="0.7"
 KERNEL_NAME="-lyapota-kernel"
 export LOCALVERSION=${KERNEL_NAME}-v${KERNEL_VERSION}
 
+KERNEL_DEFCONFIG=exynos8890-lyapota_defconfig
+MODEL_DEFCONFIG=exynos8890-lyapota-"$MODEL"
 
-if [ $MODEL != hero2lte ]
-then MODEL_DEFCONFIG=exynos8890-"$MODEL"_defconfig
-fi
-
-KERNEL_IMG=$BUILD_KERNEL_OUT_DIR/arch/arm64/boot/Image
+KERNEL_IMG=$BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/Image
 DTC=$BUILD_KERNEL_OUT_DIR/scripts/dtc/dtc
 
 case $MODEL in
 herolte)
-	case $VARIANT in
-	can|eur|xx|duos)
-		DTSFILES="exynos8890-herolte_eur_open_00 exynos8890-herolte_eur_open_01
-				exynos8890-herolte_eur_open_02 exynos8890-herolte_eur_open_03
-				exynos8890-herolte_eur_open_04 exynos8890-herolte_eur_open_08
-				exynos8890-herolte_eur_open_09"
-		;;
-	kor|skt|ktt|lgt)
-		DTSFILES="exynos8890-herolte_kor_all_00 exynos8890-herolte_kor_all_01
-				exynos8890-herolte_kor_all_02 exynos8890-herolte_kor_all_03
-				exynos8890-herolte_kor_all_04 exynos8890-herolte_kor_all_08"
-		;;
-	*) abort "Unknown variant: $VARIANT" ;;
-	esac
+	DTSFILES="exynos8890-herolte_eur_open_00 exynos8890-herolte_eur_open_01
+		exynos8890-herolte_eur_open_02 exynos8890-herolte_eur_open_03
+		exynos8890-herolte_eur_open_04 exynos8890-herolte_eur_open_08
+		exynos8890-herolte_eur_open_09"
 	;;
 hero2lte)
-	case $VARIANT in
-	can|eur|xx|duos)
-		DTSFILES="exynos8890-hero2lte_eur_open_00 exynos8890-hero2lte_eur_open_01
-				exynos8890-hero2lte_eur_open_03 exynos8890-hero2lte_eur_open_04
-				exynos8890-hero2lte_eur_open_08"
-		;;
-	kor|skt|ktt|lgt)
-		DTSFILES="exynos8890-hero2lte_kor_all_00 exynos8890-hero2lte_kor_all_01
-				exynos8890-hero2lte_kor_all_03 exynos8890-hero2lte_kor_all_04
-				exynos8890-hero2lte_kor_all_08"
-		;;
-	*) abort "Unknown variant: $VARIANT" ;;
-	esac
+	DTSFILES="exynos8890-hero2lte_eur_open_00 exynos8890-hero2lte_eur_open_01
+		exynos8890-hero2lte_eur_open_03 exynos8890-hero2lte_eur_open_04
+		exynos8890-hero2lte_eur_open_08"
 	;;
 esac
-
-FUNC_CLEAN_DTB()
-{
-	if ! [ -d $BUILD_KERNEL_OUT_DIR/arch/arm64/boot/dts ] ; then
-		echo "no directory : "$BUILD_KERNEL_OUT_DIR/arch/arm64/boot/dts""
-	else
-		echo "rm files in : "$BUILD_KERNEL_OUT_DIR/arch/arm64/boot/dts/*.dtb""
-		rm $BUILD_KERNEL_OUT_DIR/arch/arm64/boot/dts/*.dtb
-		echo "rm files in : "$BUILD_KERNEL_OUT_DIR/arch/arm64/boot/dtb/*""
-		rm -f $BUILD_KERNEL_OUT_DIR/arch/arm64/boot/dtb/*
-	fi
-}
 
 INSTALLED_DTIMAGE_TARGET=${BUILD_KERNEL_OUT_DIR}/dt.img
 DTBTOOL=$BUILD_KERNEL_DIR/tools/dtbtool
 PAGE_SIZE=2048
 DTB_PADDING=0
+
+FUNC_CLEAN_DTB()
+{
+	if ! [ -d $BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/dts ] ; then
+		echo "no directory : "$BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/dts""
+	else
+		rm -f $BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/dtb/*
+		rm $BUILD_KERNEL_OUT_DIR/arch/$ARCH/boot/boot.img-dtb
+	fi
+}
 
 FUNC_BUILD_DTIMAGE_TARGET()
 {
@@ -141,23 +114,14 @@ FUNC_BUILD_KERNEL()
 	rm -f $BUILD_KERNEL_OUT_DIR/init/vmm.elf
 	ln -s $BUILD_KERNEL_DIR/init/vmm.elf $BUILD_KERNEL_OUT_DIR/init/vmm.elf
 
-if [ $MODEL != hero2lte ]
-then
-	cp -f $BUILD_KERNEL_DIR/arch/arm64/configs/$KERNEL_DEFCONFIG /tmp/tmp_defconfig
-	cat $BUILD_KERNEL_DIR/arch/arm64/configs/$MODEL_DEFCONFIG >> /tmp/tmp_defconfig
+	cp -f $BUILD_KERNEL_DIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG $BUILD_KERNEL_DIR/arch/$ARCH/configs/tmp_defconfig
+	cat $BUILD_KERNEL_DIR/arch/$ARCH/configs/$MODEL_DEFCONFIG >> $BUILD_KERNEL_DIR/arch/$ARCH/configs/tmp_defconfig
 
-	make -C $BUILD_KERNEL_DIR O=$BUILD_KERNEL_OUT_DIR -j$BUILD_JOB_NUMBER ARCH=arm64 \
+	make -C $BUILD_KERNEL_DIR O=$BUILD_KERNEL_OUT_DIR -j$BUILD_JOB_NUMBER ARCH=$ARCH \
 			CROSS_COMPILE=$BUILD_CROSS_COMPILE \
 			tmp_defconfig || exit -1
-else
-	make -C $BUILD_KERNEL_DIR O=$BUILD_KERNEL_OUT_DIR -j$BUILD_JOB_NUMBER ARCH=arm64 \
-			CROSS_COMPILE=$BUILD_CROSS_COMPILE \
-			$KERNEL_DEFCONFIG || exit -1
 
-	cp $BUILD_KERNEL_OUT_DIR/.config $BUILD_KERNEL_DIR/arch/arm64/configs/$KERNEL_DEFCONFIG
-fi
-
-	make -C $BUILD_KERNEL_DIR O=$BUILD_KERNEL_OUT_DIR -j$BUILD_JOB_NUMBER ARCH=arm64 \
+	make -C $BUILD_KERNEL_DIR O=$BUILD_KERNEL_OUT_DIR -j$BUILD_JOB_NUMBER ARCH=$ARCH \
 			CROSS_COMPILE=$BUILD_CROSS_COMPILE || exit -1
 
 	cp $KERNEL_IMG $BUILD_KERNEL_DIR/output/Image-$MODEL
@@ -170,7 +134,7 @@ fi
 }
 
 IMAGE_KITCHEN_DIR=$BUILD_KERNEL_DIR/AIK-Linux
-BOOT_IMAGE_TARGET=$IMAGE_KITCHEN_DIR/boot.img
+BOOT_IMAGE_TARGET=$IMAGE_KITCHEN_DIR/boot-"$MODEL".img
 
 FUNC_BUILD_BOOT_IMAGE()
 {
@@ -225,7 +189,7 @@ FUNC_PACK_ZIP_FILE()
 	echo ""
 	echo "ZIP file target : $ZIP_FILE_TARGET"
 
-	rm -f $ZIP_FILE_DIR/kernel/boot.img
+	rm -f $ZIP_FILE_DIR/kernel/boot-"$MODEL".img
 	rm -f $ZIP_FILE_TARGET
 	cp $BOOT_IMAGE_TARGET $ZIP_FILE_DIR/kernel
 
