@@ -71,17 +71,17 @@
 
 		freq_tab_count = <3>;
 
-		freq_clip_max_0 = <1872000>;
-		freq_clip_max_1 = <1352000>;
+		freq_clip_max_0 = <2080000>;
+		freq_clip_max_1 = <1560000>;
 		freq_clip_max_2 = <728000>;
 
-		cooling_level_0 = <76>;
-		cooling_level_1 = <81>;
-		cooling_level_2 = <86>;
+		cooling_level_0 = <81>;
+		cooling_level_1 = <86>;
+		cooling_level_2 = <93>;
 
 		hotplug_enable = <1>;
-		hotplug_in_threshold = <93>;
-		hotplug_out_threshold = <96>;
+		hotplug_in_threshold = <96>;
+		hotplug_out_threshold = <101>;
 	};
 
 	tmuctrl_1: tmuctrl@10064000 {
@@ -122,17 +122,17 @@
 
 		freq_tab_count = <5>;
 
-		freq_clip_max_0 = <1482000>;
-		freq_clip_max_1 = <1378000>;
-		freq_clip_max_2 = <1170000>;
+		freq_clip_max_0 = <1586000>;
+		freq_clip_max_1 = <1482000>;
+		freq_clip_max_2 = <1274000>;
 		freq_clip_max_3 = <1066000>;
 		freq_clip_max_4 = <442000>;
 
-		cooling_level_0 = <76>;
-		cooling_level_1 = <81>;
-		cooling_level_2 = <86>;
-		cooling_level_3 = <91>;
-		cooling_level_4 = <96>;
+		cooling_level_0 = <81>;
+		cooling_level_1 = <86>;
+		cooling_level_2 = <91>;
+		cooling_level_3 = <96>;
+		cooling_level_4 = <101>;
 	};
 
 	tmuctrl_2: tmuctrl@10068000 {
@@ -173,28 +173,28 @@
 
 		freq_tab_count = <6>;
 
-		freq_clip_max_0 = <600000>;
-		freq_clip_max_1 = <600000>;
-		freq_clip_max_2 = <546000>;
-		freq_clip_max_3 = <419000>;
-		freq_clip_max_4 = <260000>;
+		freq_clip_max_0 = <702000>;
+		freq_clip_max_1 = <650000>;
+		freq_clip_max_2 = <600000>;
+		freq_clip_max_3 = <546000>;
+		freq_clip_max_4 = <419000>;
 		freq_clip_max_5 = <260000>;
 
-		cooling_level_0 = <76>;
-		cooling_level_1 = <81>;
-		cooling_level_2 = <86>;
-		cooling_level_3 = <91>;
-		cooling_level_4 = <96>;
-		cooling_level_5 = <101>;
+		cooling_level_0 = <81>;
+		cooling_level_1 = <86>;
+		cooling_level_2 = <91>;
+		cooling_level_3 = <96>;
+		cooling_level_4 = <101>;
+		cooling_level_5 = <106>;
 
 		/* gpu cooling related table */
 		/* flags, driver_data(index), frequency */
 		gpu_idx_num = <7>;
-		gpu_cooling_table = < 0 0 650000
-		                      0 1 600000
-		                      0 2 546000
-		                      0 3 419000
-		                      0 4 338000
+		gpu_cooling_table = < 0 0 806000
+		                      0 1 702000
+		                      0 2 600000
+		                      0 3 546000
+		                      0 4 419000
 		                      0 5 260000
 		                      0 6 TABLE_END>;
 	};
@@ -284,17 +284,17 @@
 
 		freq_tab_count = <3>;
 
-		freq_clip_max_0 = <1872000>;
-		freq_clip_max_1 = <1352000>;
+		freq_clip_max_0 = <2080000>;
+		freq_clip_max_1 = <1560000>;
 		freq_clip_max_2 = <728000>;
 
-		cooling_level_0 = <76>;
-		cooling_level_1 = <81>;
-		cooling_level_2 = <86>;
+		cooling_level_0 = <81>;
+		cooling_level_1 = <86>;
+		cooling_level_2 = <93>;
 
 		hotplug_enable = <1>;
-		hotplug_in_threshold = <93>;
-		hotplug_out_threshold = <96>;
+		hotplug_in_threshold = <96>;
+		hotplug_out_threshold = <101>;
 	};
 
 	chosen {
@@ -473,7 +473,7 @@
 				buck2_reg: BUCK2 {
 					regulator-name = "vdd_mngs";
 					regulator-min-microvolt = <500000>;
-					regulator-max-microvolt = <1300000>;
+					regulator-max-microvolt = <1575000>;
 					regulator-always-on;
 					regulator-ramp-delay = <12000>;
 					regulator-initial-mode = <1>;
@@ -482,7 +482,7 @@
 				buck3_reg: BUCK3 {
 					regulator-name = "vdd_apollo";
 					regulator-min-microvolt = <500000>;
-					regulator-max-microvolt = <1200000>;
+					regulator-max-microvolt = <1475000>;
 					regulator-always-on;
 					regulator-ramp-delay = <12000>;
 					regulator-initial-mode = <1>;
