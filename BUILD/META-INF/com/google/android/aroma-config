@@ -39,7 +39,7 @@
 #
 
 ini_set("rom_name",             "Prometheus");
-ini_set("rom_version",          "0.8");
+ini_set("rom_version",          "0.9");
 ini_set("rom_author",           "lyapota");
 ini_set("rom_device",           "Samsung SM-G935F/G930F");
 ini_set("rom_date",             "19 July 2016");
@@ -155,10 +155,9 @@ menubox(
 
       "338 MHz","",0,
       "442 MHz","stock",1,
-      "546 MHz","",0
-#      ,
-#      "650 MHz","",0,
-#      "754 MHz","",0
+      "546 MHz","",0,
+      "650 MHz","",0,
+      "754 MHz","",0
     );
 
     selectbox(
@@ -169,9 +168,9 @@ menubox(
 
       "1.586 GHz","stock",1,
       "1.690 GHz","",0,
-      "1.794 GHz","",0
-#      ,
-#      "1.898 GHz","",0,
+      "1.794 GHz","",0,
+      "1.898 GHz","",0
+#,
 #      "1.976 GHz","",0
     );
 
@@ -201,10 +200,9 @@ menubox(
       "2.4 GHz","",0,
       "2.5 GHz","",0,
       "2.6 GHz","",0,
-      "2.7 GHz","",0
-#      ,
-#      "2.8 GHz","",0,
-#      "2.9 GHz","",0
+      "2.7 GHz","",0,
+      "2.8 GHz","",0,
+      "2.9 GHz","",0
     );
 
   #########
