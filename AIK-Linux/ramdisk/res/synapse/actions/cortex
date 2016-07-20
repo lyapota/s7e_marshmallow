@@ -1,3 +1,4 @@
+# By UpInTheAir for SkyHigh kernels
 
 BB=/system/xbin/busybox;
 
@@ -7,7 +8,7 @@ fi;
 
 case $1 in
 cortexbrain_background_process)
-  P=/res/synapse/ael/cortexbrain_background_process
+  P=/res/synapse/prom/cortexbrain_background_process
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -28,7 +29,7 @@ cortexbrain_background_process)
   fi
   ;;
 cortexbrain_alpm_auto)
-  P=/res/synapse/ael/cortexbrain_alpm_auto
+  P=/res/synapse/prom/cortexbrain_alpm_auto
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -49,7 +50,7 @@ cortexbrain_alpm_auto)
   fi
   ;;
 cortexbrain_doze_auto)
-  P=/res/synapse/ael/cortexbrain_doze_auto
+  P=/res/synapse/prom/cortexbrain_doze_auto
   if [ ! -z "$2" ]; then
   if [ "$2" == Stock ]; then
     echo 0 > $P
@@ -72,7 +73,7 @@ cortexbrain_doze_auto)
   fi
   ;;
 cortexbrain_wifi_auto)
-  P=/res/synapse/ael/cortexbrain_wifi_auto
+  P=/res/synapse/prom/cortexbrain_wifi_auto
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -87,7 +88,7 @@ cortexbrain_wifi_auto)
   fi
   ;;
 cortexbrain_media_manager)
-  P=/res/synapse/ael/cortexbrain_media_manager
+  P=/res/synapse/prom/cortexbrain_media_manager
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -108,7 +109,7 @@ cortexbrain_media_manager)
   fi
   ;;
 cortexbrain_system)
-  P=/res/synapse/ael/cortexbrain_system
+  P=/res/synapse/prom/cortexbrain_system
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -123,7 +124,7 @@ cortexbrain_system)
   fi
   ;;
 cortexbrain_kernel)
-  P=/res/synapse/ael/cortexbrain_kernel
+  P=/res/synapse/prom/cortexbrain_kernel
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -138,7 +139,7 @@ cortexbrain_kernel)
   fi
   ;;
 cortexbrain_nmi_auto)
-  P=/res/synapse/ael/cortexbrain_nmi_auto
+  P=/res/synapse/prom/cortexbrain_nmi_auto
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P

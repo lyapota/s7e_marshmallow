@@ -6,7 +6,7 @@ fi;
 
 case $1 in
 gpu_gov)
-  P=/res/synapse/ael//gpu_gov
+  P=/res/synapse/prom//gpu_gov
   if [ ! -z "$2" ]; then
   if [ "$2" == Default ]; then
     echo "Default" > $P

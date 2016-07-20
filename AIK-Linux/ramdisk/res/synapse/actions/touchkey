@@ -1,4 +1,4 @@
-# By UpInTheAir for volt kernels
+# By UpInTheAir for SkyHigh kernels
 
 BB=/system/xbin/busybox;
 
@@ -8,32 +8,32 @@ fi;
 
 case $1 in
 tk_brightness_sync)
-  P=/res/synapse/ael/tk_brightness_sync
+  P=/res/synapse/prom/tk_brightness_sync
   if [ ! -z "$2" ]; then
-  if [ "$2" == Disabled ]; then
+  if [ "$2" == 0 ]; then
     echo 0 > $P
 	echo "0" > /sys/devices/13900000.dsim/tk_brightness_sync;
-  elif [ "$2" == Enabled ]; then
+  elif [ "$2" == 1 ]; then
     echo 1 > $P
 	echo "1" > /sys/devices/13900000.dsim/tk_brightness_sync;
   fi; fi
   copy=$(cat $P)
   if [ "$copy" == 0 ]; then
-    echo Disabled
+    echo 0
   elif [ "$copy" == 1 ]; then
-    echo Enabled
+    echo 1
   fi
   ;;
 
 tk_disable)
-  P=/res/synapse/ael/tk_disable
+  P=/res/synapse/prom/tk_disable
   if [ ! -z "$2" ]; then
-  if [ "$2" == Disabled ]; then
+  if [ "$2" == 0 ]; then
     echo 0 > $P
 	chmod 0644 /sys/devices/virtual/sec/sec_touchkey/input/enabled;
 	echo "0" > /sys/devices/virtual/sec/sec_touchkey/input/enabled;
 	chmod 0440 /sys/devices/virtual/sec/sec_touchkey/input/enabled;
-  elif [ "$2" == Enabled ]; then
+  elif [ "$2" == 1 ]; then
     echo 1 > $P
 	chmod 0644 /sys/devices/virtual/sec/sec_touchkey/input/enabled;
 	echo "1" > /sys/devices/virtual/sec/sec_touchkey/input/enabled;
@@ -41,7 +41,7 @@ tk_disable)
 
 	# Force tk_brightness to sync if directory exists and enabled
 	if [ -e "/sys/devices/13900000.dsim/tk_brightness_sync" ]; then
-		if [ "$(cat /res/synapse/ael/tk_brightness_sync)" == "1" ]; then
+		if [ "$(cat /res/synapse/prom/tk_brightness_sync)" == "1" ]; then
 			echo "0" > /sys/devices/13900000.dsim/tk_brightness_sync;
 			echo "1" > /sys/devices/13900000.dsim/tk_brightness_sync;
 		fi;
@@ -49,14 +49,14 @@ tk_disable)
   fi; fi
   copy=$(cat $P)
   if [ "$copy" == 0 ]; then
-    echo Disabled
+    echo 0
   elif [ "$copy" == 1 ]; then
-    echo Enabled
+    echo 1
   fi
   ;;
 esac
 
-  tk_brightness_sync=$(cat /res/synapse/ael/tk_brightness_sync);
+  tk_brightness_sync=$(cat /res/synapse/prom/tk_brightness_sync);
   if [ "$tk_brightness_sync" == "0" ]; then
 
 	if [ -f "$1" ]; then

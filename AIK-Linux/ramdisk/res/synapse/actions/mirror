@@ -8,7 +8,7 @@ fi;
 
 case $1 in
 mirror_fix)
-  P=/res/synapse/SkyHigh/scr_mirror_fix
+  P=/res/synapse/prom/scr_mirror_fix
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P

@@ -4,7 +4,7 @@ BB=/system/xbin/busybox;
 
 cat << CTAG
 {
-    name:CortexBrain,
+    name:CORTEX,
     elements:[
 	{ SLiveLabel:{
 		title:"CortexBrain Status",

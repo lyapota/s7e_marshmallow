@@ -1,15 +1,15 @@
-#!/sbin/busybox sh
+#!/system/bin/sh
 
 cat << CTAG
 {
-    name:LED-CONTROL,
+    name:LED,
     elements:[
 	{ SPane:{
-		title:"LED CONTROL",
-		description:"Control LED fade-in/out time period for missed notifications.",
-	}},
-	{ SDescription:{
+		title:"LED",
 		description:"NOTE: 3rd party apps may override controls."
+	}},
+	{ SSpacer:{
+		height:1
 	}},
 	{ SOptionList:{
 		title:"Enable LED Notifications",
@@ -20,62 +20,110 @@ cat << CTAG
 			0:"Enabled", 1:"Disable"
 		}
 	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SPane:{
-		title:"LED notification delay"
+		title:"LED Notification Delay",
+		description:"Control LED delay for missed notifications."
+	}},
+	{ SSpacer:{
+		height:1
 	}},
 	{ SSeekBar:{
 		title:"Delay ON",
-		description:" Divider for delay on.\n (0 = no on time / 0.5 = default).\n",
+		description:"Divider for delay ON. (no on time = 0 / default = 0.5)\n",
 		unit:" sec",
 		weight:0.001,
 		min:0,
-		max:10000,
-		step:500,
-		default:`cat /sys/class/sec/led/led_notification_delay_on`,
+		max:3000,
+		step:100,
+		default:$(cat /sys/class/sec/led/led_notification_delay_on),
 		action:"generic /sys/class/sec/led/led_notification_delay_on"
+	}},
+	{ SSpacer:{
+		height:1
 	}},
 	{ SSeekBar:{
 		title:"Delay OFF",
-		description:" Divider for delay off.\n (0 = no off time / 5 = default).\n",
+		description:"Divider for delay OFF. (no off time = 0 / default = 5)\n",
 		unit:" sec",
 		weight:0.001,
 		min:0,
 		max:10000,
-		step:500,
-		default:`cat /sys/class/sec/led/led_notification_delay_off`,
+		step:100,
+		default:$(cat /sys/class/sec/led/led_notification_delay_off),
 		action:"generic /sys/class/sec/led/led_notification_delay_off"
 	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SPane:{
-		title:"LED fade in/out time period"
+		title:"LED Fade-in/out Time Period",
+		description:"Control LED fade-in/out time period for missed notifications.",
+	}},
+	{ SSpacer:{
+		height:1
 	}},
 	{ SOptionList:{
 		title:"LED Fade Control",
-		description:"Default is Disabled.\n",
+		description:" ",
 		default:0,
-		action:"generic /sys/class/sec/led/led_fade",
+		action:"generic /sys/class/sec/led/led_notification_ramp_control",
 		values:{
 			0:"Disabled", 1:"Enabled"
 		}
 	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SSeekBar:{
 		title:"Fade-in",
-		description:"Sets the time period of the rising slope. Default is 800.\n",
-		unit:" ms",
-		min:100,
-		max:2000,
+		description:"Sets the time period of the rising slope. (no fade-in time = 0 / default = 0.8)\n",
+		unit:" sec",
+		weight:0.001,
+		min:0,
+		max:1900,
 		step:100,
-		default:$(cat /sys/class/sec/led/led_fade_time_up),
-		action:"generic /sys/class/sec/led/led_fade_time_up"
+		default:$(cat /sys/class/sec/led/led_notification_ramp_up),
+		action:"generic /sys/class/sec/led/led_notification_ramp_up"
+	}},
+	{ SSpacer:{
+		height:1
 	}},
 	{ SSeekBar:{
 		title:"Fade-out",
-		description:"Sets the time period of the falling slope. Default is 800.\n",
-		unit:" ms",
-		min:100,
-		max:2000,
+		description:"Sets the time period of the falling slope. (no fade-out time = 0 / default = 1)\n",
+		unit:" sec",
+		weight:0.001,
+		min:0,
+		max:1900,
 		step:100,
-		default:$(cat /sys/class/sec/led/led_fade_time_down),
-		action:"generic /sys/class/sec/led/led_fade_time_down"
+		default:$(cat /sys/class/sec/led/led_notification_ramp_down),
+		action:"generic /sys/class/sec/led/led_notification_ramp_down"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"Test"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Test Notification",
+		action:"led 3"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Stop Notification",
+		action:"led 0"
+	}},
+	{ SSpacer:{
+		height:1
 	}},
     ]
 }

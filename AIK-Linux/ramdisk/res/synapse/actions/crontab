@@ -1,5 +1,5 @@
-
-# cron_log by dorimanx and modified from ExTweaks by UpInTheAir
+# By UpInTheAir for SkyHigh kernels
+# cron_log by dorimanx and modified from ExTweaks by UpInTheAir for SkyHigh kernels & Synapse
 
 BB=/system/xbin/busybox;
 
@@ -9,7 +9,7 @@ fi;
 
 case $1 in
 cron_master)
-  P=/res/synapse/ael/cron_master
+  P=/res/synapse/prom/cron_master
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -27,7 +27,7 @@ cron_master)
   fi
   ;;
 cache)
-  P=/res/synapse/ael/cron_cache
+  P=/res/synapse/prom/cron_cache
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -43,7 +43,7 @@ cache)
   ;;
 
 sqlite)
-  P=/res/synapse/ael/cron_sqlite
+  P=/res/synapse/prom/cron_sqlite
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -59,7 +59,7 @@ sqlite)
   ;;
 
 drop_cache)
-  P=/res/synapse/ael/cron_drop_cache
+  P=/res/synapse/prom/cron_drop_cache
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -75,7 +75,7 @@ drop_cache)
   ;;
 
 fg_reset)
-  P=/res/synapse/ael/cron_fg
+  P=/res/synapse/prom/cron_fg
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -91,7 +91,7 @@ fg_reset)
   ;;
 
 google)
-  P=/res/synapse/ael/cron_google
+  P=/res/synapse/prom/cron_google
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -107,7 +107,7 @@ google)
   ;;
 
 fstrim)
-  P=/res/synapse/ael/cron_fstrim
+  P=/res/synapse/prom/cron_fstrim
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P

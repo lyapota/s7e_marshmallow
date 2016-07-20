@@ -1,11 +1,9 @@
-if [ -f $1 ]; then
-	if [[ ! -z $2 ]]; then
-		echo $2 > $1
-	fi
+BB=/system/xbin/busybox;
 
-	echo $(cat $1 | sed -n -e '/\[[^]]/s/^[^[]*\[\([^]]*\)].*$/\1/p')
-else	
-	case $1 in
-	/sys/block/mmcblk1/queue/scheduler)		echo "noop" ;;
-	esac
-fi
+if [ -f "$1" ]; then
+	if [[ ! -z $2 ]]; then
+		$BB echo "$2" > "$1" 2> /dev/null;
+	fi;
+
+	$BB echo "$($BB cat "$1" | $BB sed -n -e '/\[[^]]/s/^[^[]*\[\([^]]*\)].*$/\1/p')";
+fi;

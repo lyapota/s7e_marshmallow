@@ -17,6 +17,12 @@ case $1 in
 	$BB sleep 1;
 	reboot "$2";
   ;;
+  hot_reboot)
+	echo "0" > /sys/kernel/dyn_fsync/Dyn_fsync_active;
+	$BB sync;
+	$BB sleep 1;
+	pkill zygote
+  ;;
   cleardata)
 	echo "0" > /sys/kernel/dyn_fsync/Dyn_fsync_active;
 	am force-stop com.af.synapse 2> /dev/null;
@@ -148,8 +154,14 @@ case $1 in
 	$BB sleep 1;
 	echo "Clean up done";
   ;;
+  clean_initd)
+	$BB rm -rf /system/etc/init.d/*
+	$BB sync;
+	$BB sleep 1;
+	echo "init.d folder cleaned";
+  ;;
 scr_cache)
-  P=/res/synapse/ael/scr_cache
+  P=/res/synapse/prom/scr_cache
   if [ ! -z "$2" ]; then
   if [ "$2" == 0 ]; then
     echo 0 > $P
@@ -176,7 +188,7 @@ scr_cache)
   fi
   ;;
 spcm_service)
-  P=/res/synapse/ael/spcm_service
+  P=/res/synapse/prom/spcm_service
   if [ ! -z "$2" ]; then
   if [ "$2" == Enabled ]; then
     echo Enabled > $P
@@ -193,7 +205,7 @@ spcm_service)
   fi
   ;;
 SystemUpdateService)
-  P=/res/synapse/ael/SystemUpdateService
+  P=/res/synapse/prom/SystemUpdateService
   if [ ! -z "$2" ]; then
   if [ "$2" == Enabled ]; then
     echo Enabled > $P

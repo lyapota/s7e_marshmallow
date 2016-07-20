@@ -1,48 +1,42 @@
-#!/sbin/busybox sh
+#!/system/bin/sh
 
 cat << CTAG
 {
-    name:"LOGS and PROFILES",
+    name:LOGS,
     elements:[
-	{ SPane:{
-		title:"Log Creation"
-	}},
 	{ SDescription:{
-		description:""
+		description:"To report any issue with the kernel, you should share the zip file of logs created by using below button. This will put logcat, dmesg, last_kmsg & other relevant information into one zip file which will be used only for debug purposes."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Save All Logs",
+		action:"log alllogs"
+	}},
+	{ SSpacer:{
+		height:2
 	}},
 	{ SButton:{
 		label:"Save logcat",
 		action:"log logcat"
 	}},
-	{ SDescription:{
-		description:""
+	{ SSpacer:{
+		height:2
 	}},
 	{ SButton:{
 		label:"Save dmesg",
 		action:"log dmesg"
 	}},
-	{ SDescription:{
-		description:""
+	{ SSpacer:{
+		height:1
 	}},
 	{ SButton:{
 		label:"Save last_kmsg",
 		action:"log kmsg"
 	}},
-	{ SDescription:{
-		description:" "
-	}},
-	{ SPane:{
-	title:"Advanced Tools"
-	}},
-	{ SDescription:{
-	description:"Use this button to defrag/reindex all databases found in /data & /sdcard, this increases database read/write performance. NOTE: This process can take from 1-2 minutes."
-	}},
-	{ SButton:{
-	label:"Optimize Databases",
-	action:"devtools optimizedb"
-	}},
-	{ SDescription:{
-		description:""
+	{ SSpacer:{
+		height:1
 	}},
     ]
 }

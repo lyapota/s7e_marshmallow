@@ -2,7 +2,7 @@
 
 cat << CTAG
 {
-    name:Crontab,
+    name:CRONTAB,
     elements:[
 	{ SPane:{
 		title:"Cron Tasks",
@@ -77,6 +77,20 @@ cat << CTAG
 		default:$(echo "$(/res/synapse/actions/crontab fg_reset)"),
 		action:"crontab fg_reset",
 		values:[Disabled, Enabled,]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"Test Cron Task Jobs",
+		description:"Use this button to check if Cron Task Jobs are done as requested. This will show the log for all finished jobs."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Check Jobs",
+		action:"crontab log"
 	}},
 	{ SSpacer:{
 		height:1

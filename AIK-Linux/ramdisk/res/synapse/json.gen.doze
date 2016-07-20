@@ -2,7 +2,7 @@
 
 cat << CTAG
 {
-    name:Doze Modes,
+    name:DOZE,
     elements:[
 	{ SDescription:{ 
 		description:"Doze reduces battery consumption by deferring background CPU and network activity for apps when the device is unused for long periods of time. More info: <a href='http://developer.android.com/training/monitoring-device-state/doze-standby.html'>developer.android.com</a>"
@@ -52,7 +52,7 @@ cat << CTAG
 		height:1
 	}},
 	{ SDescription:{ 
-		description:"AUTO = Force 'IDLE' state when screen is OFF (if not in-call) & 'ACTIVE' state when screen is ON."
+		description:"AUTO = Force 'IDLE' state when screen is OFF (if not in-call) & 'ACTIVE' state when screen is ON. Requires CortexBrain ENABLED !"
 	}},
 	{ SSpacer:{
 		height:2
@@ -85,22 +85,22 @@ cat << CTAG
 				on:APPLY,
 				do:[ REFRESH, APPLY ],
 				to:[
-					"doze /res/synapse/ael/doze_inactive_to",
-					"doze /res/synapse/ael/doze_sensing_to",
-					"doze /res/synapse/ael/doze_locating_to",
-					"doze /res/synapse/ael/doze_location_accuracy",
-					"doze /res/synapse/ael/doze_motion_inactive_to",
-					"doze /res/synapse/ael/doze_idle_after_inactive_to",
-					"doze /res/synapse/ael/doze_idle_pending_to",
-					"doze /res/synapse/ael/doze_max_idle_pending_to",
-					"doze /res/synapse/ael/doze_idle_pending_factor",
-					"doze /res/synapse/ael/doze_idle_to",
-					"doze /res/synapse/ael/doze_max_idle_to",
-					"doze /res/synapse/ael/doze_idle_factor",
-					"doze /res/synapse/ael/doze_min_time_to_alarm",
-					"doze /res/synapse/ael/doze_max_temp_app_whitelist_duration",
-					"doze /res/synapse/ael/doze_mms_temp_app_whitelist_duration",
-					"doze /res/synapse/ael/doze_sms_temp_app_whitelist_duration"
+					"doze /res/synapse/prom/doze_inactive_to",
+					"doze /res/synapse/prom/doze_sensing_to",
+					"doze /res/synapse/prom/doze_locating_to",
+					"doze /res/synapse/prom/doze_location_accuracy",
+					"doze /res/synapse/prom/doze_motion_inactive_to",
+					"doze /res/synapse/prom/doze_idle_after_inactive_to",
+					"doze /res/synapse/prom/doze_idle_pending_to",
+					"doze /res/synapse/prom/doze_max_idle_pending_to",
+					"doze /res/synapse/prom/doze_idle_pending_factor",
+					"doze /res/synapse/prom/doze_idle_to",
+					"doze /res/synapse/prom/doze_max_idle_to",
+					"doze /res/synapse/prom/doze_idle_factor",
+					"doze /res/synapse/prom/doze_min_time_to_alarm",
+					"doze /res/synapse/prom/doze_max_temp_app_whitelist_duration",
+					"doze /res/synapse/prom/doze_mms_temp_app_whitelist_duration",
+					"doze /res/synapse/prom/doze_sms_temp_app_whitelist_duration"
 				],
 			}
 		]
@@ -138,7 +138,7 @@ cat << CTAG
 		description:"This is the time, after becoming inactive, at which we start looking at the motion sensor to determine if the device is being left alone. We don't do this immediately after going inactive just because we don't want to be continually running the significant motion sensor whenever the screen is off.\n",
 		unit:" min", min:0, step:1, max:30,
 		default:30,
-		action:"doze /res/synapse/ael/doze_inactive_to"
+		action:"doze /res/synapse/prom/doze_inactive_to"
         }},
 	{ SSpacer:{
 		height:1
@@ -148,7 +148,7 @@ cat << CTAG
 		description:"If we don't receive a callback from AnyMotion in this amount of time + locating_to, we will change from STATE_SENSING to STATE_INACTIVE, and any AnyMotion callbacks while not in STATE_SENSING will be ignored.\n",
 		unit:" min", min:0, step:1, max:4,
 		default:4,
-		action:"doze /res/synapse/ael/doze_sensing_to"
+		action:"doze /res/synapse/prom/doze_sensing_to"
         }},
 	{ SSpacer:{
 		height:1
@@ -158,7 +158,7 @@ cat << CTAG
 		description:"This is how long we will wait to try to get a good location fix before going in to idle mode.\n",
 		unit:" sec", min:0, step:1, max:30,
 		default:30,
-		action:"doze /res/synapse/ael/doze_locating_to"
+		action:"doze /res/synapse/prom/doze_locating_to"
         }},
 	{ SSpacer:{
 		height:1
@@ -168,7 +168,7 @@ cat << CTAG
 		description:"The desired maximum accuracy (in meters) we consider the location to be good enough to go on to idle. We will be trying to get an accuracy fix at least this good or until locating_to expires.\n",
 		unit:" m", min:20, step:1, max:50,
 		default:20,
-		action:"doze /res/synapse/ael/doze_location_accuracy"
+		action:"doze /res/synapse/prom/doze_location_accuracy"
         }},
 	{ SSpacer:{
 		height:1
@@ -178,7 +178,7 @@ cat << CTAG
 		description:"This is the time, after seeing motion, that we wait after becoming inactive from that until we start looking for motion again.\n",
 		unit:" min", min:0, step:1, max:10,
 		default:10,
-		action:"doze /res/synapse/ael/doze_motion_inactive_to"
+		action:"doze /res/synapse/prom/doze_motion_inactive_to"
         }},
 	{ SSpacer:{
 		height:2
@@ -194,7 +194,7 @@ cat << CTAG
 		description:"This is the time, after the inactive timeout elapses, that we will wait looking for significant motion until we truly consider the device to be idle.\n",
 		unit:" min", min:0, step:1, max:30,
 		default:30,
-		action:"doze /res/synapse/ael/doze_idle_after_inactive_to"
+		action:"doze /res/synapse/prom/doze_idle_after_inactive_to"
         }},
 	{ SSpacer:{
 		height:1
@@ -204,7 +204,7 @@ cat << CTAG
 		description:"This is the initial time, after being idle, that we will allow ourself to be back in the IDLE_PENDING state allowing the system to run normally until we return to idle.\n",
 		unit:" min", min:0, step:1, max:5,
 		default:5,
-		action:"doze /res/synapse/ael/doze_idle_pending_to"
+		action:"doze /res/synapse/prom/doze_idle_pending_to"
         }},
 	{ SSpacer:{
 		height:1
@@ -214,7 +214,7 @@ cat << CTAG
 		description:"Maximum pending idle timeout (time spent running) we will be allowed to use.\n",
 		unit:" min", min:0, step:1, max:10,
 		default:10,
-		action:"doze /res/synapse/ael/doze_max_idle_pending_to"
+		action:"doze /res/synapse/prom/doze_max_idle_pending_to"
         }},
 	{ SSpacer:{
 		height:1
@@ -224,7 +224,7 @@ cat << CTAG
 		description:"Scaling factor to apply to current pending idle timeout each time we cycle through that state.\n",
 		unit:"", min:1, step:1, max:2,
 		default:2,
-		action:"doze /res/synapse/ael/doze_idle_pending_factor"
+		action:"doze /res/synapse/prom/doze_idle_pending_factor"
         }},
 	{ SSpacer:{
 		height:1
@@ -234,7 +234,7 @@ cat << CTAG
 		description:"This is the initial time that we want to sit in the idle state before waking up again to return to pending idle and allowing normal work to run.\n",
 		unit:" min", min:0, step:1, max:60,
 		default:60,
-		action:"doze /res/synapse/ael/doze_idle_to"
+		action:"doze /res/synapse/prom/doze_idle_to"
         }},
 	{ SSpacer:{
 		height:1
@@ -244,7 +244,7 @@ cat << CTAG
 		description:"Maximum idle duration we will be allowed to use.\n",
 		unit:" hr", min:1, step:1, max:6,
 		default:6,
-		action:"doze /res/synapse/ael/doze_max_idle_to"
+		action:"doze /res/synapse/prom/doze_max_idle_to"
         }},
 	{ SSpacer:{
 		height:1
@@ -254,7 +254,7 @@ cat << CTAG
 		description:"Scaling factor to apply to current idle timeout each time we cycle through that state.\n",
 		unit:"", min:1, step:1, max:2,
 		default:2,
-		action:"doze /res/synapse/ael/doze_idle_factor"
+		action:"doze /res/synapse/prom/doze_idle_factor"
         }},
 	{ SSpacer:{
 		height:2
@@ -270,7 +270,7 @@ cat << CTAG
 		description:"This is the minimum time we will allow until the next upcoming alarm for us to actually go in to idle mode.\n",
 		unit:" min", min:0, step:1, max:60,
 		default:60,
-		action:"doze /res/synapse/ael/doze_min_time_to_alarm"
+		action:"doze /res/synapse/prom/doze_min_time_to_alarm"
         }},
 	{ SSpacer:{
 		height:1
@@ -280,7 +280,7 @@ cat << CTAG
 		description:"Max amount of time to temporarily whitelist an app when it receives a high tickle.\n",
 		unit:" min", min:0, step:1, max:5,
 		default:5,
-		action:"doze /res/synapse/ael/doze_max_temp_app_whitelist_duration"
+		action:"doze /res/synapse/prom/doze_max_temp_app_whitelist_duration"
         }},
 	{ SSpacer:{
 		height:1
@@ -290,7 +290,7 @@ cat << CTAG
 		description:"Amount of time we would like to whitelist an app that is receiving an MMS.\n",
 		unit:" sec", min:0, step:1, max:60,
 		default:60,
-		action:"doze /res/synapse/ael/doze_mms_temp_app_whitelist_duration"
+		action:"doze /res/synapse/prom/doze_mms_temp_app_whitelist_duration"
         }},
 	{ SSpacer:{
 		height:1
@@ -300,7 +300,7 @@ cat << CTAG
 		description:"Amount of time we would like to whitelist an app that is receiving an SMS.\n",
 		unit:" sec", min:0, step:1, max:20,
 		default:20,
-		action:"doze /res/synapse/ael/doze_sms_temp_app_whitelist_duration"
+		action:"doze /res/synapse/prom/doze_sms_temp_app_whitelist_duration"
         }},
 	{ SSpacer:{
 		height:1

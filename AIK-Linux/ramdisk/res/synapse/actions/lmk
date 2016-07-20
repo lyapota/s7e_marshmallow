@@ -79,13 +79,13 @@ Exterminate(){
 
 if [ "$1" == "profile" ]; then
 	if [[ ! -z $2 ]]; then
-		$BB echo "$2" > /res/synapse/SkyHigh/lmk_prof;
+		$BB echo "$2" > /res/synapse/prom/lmk_prof;
 			$2;
 			$BB echo "$MINFREE" > $P;
 			$BB echo "$COST" > /sys/module/lowmemorykiller/parameters/cost;
 	fi;
 	
-	$BB echo "$(cat /res/synapse/SkyHigh/lmk_prof)";
+	$BB echo "$(cat /res/synapse/prom/lmk_prof)";
 else
 	if [[ ! -z $2 ]]; then
 		write "$1" "$2";

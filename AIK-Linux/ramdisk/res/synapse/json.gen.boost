@@ -2,7 +2,7 @@
 
 cat << CTAG
 {
-    name:Boost,
+    name:BOOST,
     elements:[
 	{ SPane:{
 		title:"Input-Booster",

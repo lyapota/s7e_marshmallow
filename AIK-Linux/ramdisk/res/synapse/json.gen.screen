@@ -1,8 +1,10 @@
 #!/system/bin/sh
 
+BB=/system/xbin/busybox;
+
 cat << CTAG
 {
-    name:Screen,
+    name:SCREEN,
     elements:[
 	{ SLiveLabel:{
 		title:"Lux",
@@ -43,24 +45,8 @@ cat << CTAG
 		title:"Lux threshold",
 		description:"Max ambient light value required to enable 'Auto' LCD ALPM. Requires CortexBrain ENABLED !\n",
 		min:0, max:200, unit:" lx", step:1,
-		default:$(cat /res/synapse/volt/cortexbrain_lux),
-		action:"hmp /res/synapse/volt/cortexbrain_lux"
-	}},
-	{ SSpacer:{
-		height:1
-	}},
-	{ SPane:{
-		title:"Touchkey"
-	}},
-	{ SSpacer:{
-		height:1
-	}},
-	{ SOptionList:{
-		title:"Disable Touchkeys",
-		description:"Completely disable touchkey events.\n",
-		default:$(echo "$(/res/synapse/actions/touchkey tk_disable)"),
-		action:"touchkey tk_disable",
-		values:[Disabled, Enabled,]
+		default:$(cat /res/synapse/prom/cortexbrain_lux),
+		action:"hmp /res/synapse/prom/cortexbrain_lux"
 	}},
 	{ SSpacer:{
 		height:1

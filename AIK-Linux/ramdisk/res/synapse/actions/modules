@@ -11,7 +11,7 @@ fi;
 
 case $1 in
 cifs)
-  P=/data/media/0/hackerkernel/values/cifs
+  P=/res/synapse/prom/cifs
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -29,7 +29,7 @@ cifs)
   ;;
 
 ntfs)
-  P=/data/media/0/hackerkernel/values/ntfs
+  P=/res/synapse/prom/ntfs
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -47,7 +47,7 @@ ntfs)
   ;;
 
 isofs)
-  P=/data/media/0/hackerkernel/values/isofs
+  P=/res/synapse/prom/isofs
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -64,7 +64,7 @@ isofs)
   fi
   ;;
 udf)
-  P=/data/media/0/hackerkernel/values/udf
+  P=/res/synapse/prom/udf
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P
@@ -82,7 +82,7 @@ udf)
   ;;
 
 xpad)
-  P=/data/media/0/hackerkernel/values/xpad
+  P=/res/synapse/prom/xpad
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
     echo 0 > $P

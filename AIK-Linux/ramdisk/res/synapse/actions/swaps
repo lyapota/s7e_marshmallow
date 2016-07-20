@@ -10,18 +10,18 @@ fi;
 
 case $1 in
 vnswap0)
-  P=/res/synapse/SkyHigh/vnswap0
+  P=/res/synapse/prom/vnswap0
   if [ ! -z "$2" ]; then
   if [ "$2" == Disabled ]; then
-	swapoff $SWAP > /dev/null 2>&1
+	$BB swapoff $SWAP > /dev/null 2>&1
 	$BB sync;
 	$BB echo "0" > /proc/sys/vm/swappiness;
 	echo 0 > $P
   elif [ "$2" == Enabled ]; then
-	mkswap $SWAP > /dev/null 2>&1
-	swapon $SWAP > /dev/null 2>&1
+	$BB mkswap $SWAP > /dev/null 2>&1
+	$BB swapon $SWAP > /dev/null 2>&1
 	$BB sync;
-	$BB echo "200" > /proc/sys/vm/swappiness;
+	$BB echo "190" > /proc/sys/vm/swappiness;
 	echo 1 > $P
   fi; fi
   copy=$(cat $P)
