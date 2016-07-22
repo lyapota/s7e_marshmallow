@@ -1500,6 +1500,7 @@ static struct delayed_work init_work;
 void ipa_update(void)
 {
 	ipa_setup_power_tables();
+	ipa_setup_max_limits();
 }
 
 static void arbiter_init(struct work_struct *work)
