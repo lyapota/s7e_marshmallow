@@ -19,6 +19,7 @@ cat << CTAG
 		`. /res/synapse/json.gen.gpu`,
 		`. /res/synapse/json.gen.gpu_volt`,
   		`. /res/synapse/json.gen.bus`,
+  		`. /res/synapse/json.gen.powersuspend`,
 		`. /res/synapse/json.gen.io`,
 		`. /res/synapse/json.gen.memory`,
 		`. /res/synapse/json.gen.advanced`,
