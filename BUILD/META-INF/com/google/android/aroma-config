@@ -42,7 +42,7 @@ ini_set("rom_name",             "Prometheus");
 ini_set("rom_version",          "1.0");
 ini_set("rom_author",           "lyapota");
 ini_set("rom_device",           "Samsung SM-G935F/G930F");
-ini_set("rom_date",             "22 July 2016");
+ini_set("rom_date",             "24 July 2016");
 
 ini_set("force_colorspace", "rgba");
 
@@ -154,7 +154,7 @@ menubox(
       "pr_little_min.prop",
 
       "338 MHz","",0,
-      "442 MHz","stock",1,
+      "442 MHz","<b>stock</b>",1,
       "546 MHz","",0,
       "650 MHz","",0,
       "754 MHz","",0
@@ -166,10 +166,10 @@ menubox(
       "@apps",
       "pr_little_max.prop",
 
-      "1.586 GHz","stock",1,
+      "1.586 GHz","<b>stock</b>",1,
       "1.690 GHz","",0,
       "1.794 GHz","",0,
-      "1.898 GHz","",0
+      "1.898 GHz","<#c00>can be unstable</#>",0
 #,
 #      "1.976 GHz","",0
     );
@@ -188,7 +188,7 @@ menubox(
       "416 MHz","",0,
       "520 MHz","",0,
       "624 MHz","",0,
-      "728 MHz","stock",1
+      "728 MHz","<b>stock</b>",1
     );
 
     selectbox(
@@ -196,13 +196,13 @@ menubox(
       "select <b>MAX</b> MONGOOSE frequence",
       "@apps",
       "pr_big_max.prop",
-      "2.3 GHz","stock",1,
+      "2.3 GHz","<b>stock</b>",1,
       "2.4 GHz","",0,
       "2.5 GHz","",0,
       "2.6 GHz","",0,
       "2.7 GHz","",0,
-      "2.8 GHz","",0,
-      "2.9 GHz","",0
+      "2.8 GHz","<#c00>can be unstable</#>",0,
+      "2.9 GHz","<#c00>can be unstable</#>",0
     );
 
   #########
@@ -217,9 +217,9 @@ menubox(
 
       "546 MHz","",0,
       "600 MHz","",0,
-      "650 MHz","stock",1,
+      "650 MHz","<b>stock</b>",1,
       "702 MHz","",0,
-      "806 MHz","",0
+      "806 MHz","<#c00>can be unstable</#>",0
     );
       
 
@@ -233,7 +233,7 @@ menubox(
       "@apps",
       "pr_vdd_uv.prop",
 
-      " ASV","stock",1,
+      " ASV","<b>stock</b>",1,
       " -6.25 mV","",0,
       "-12.50 mV","",0,
       "-18.75 mV","",0,
@@ -251,7 +251,7 @@ menubox(
       "@apps",
       "pr_reset_freq.prop",
 
-      " 5 sec","default",1,
+      " 5 sec","<b>default</b>",1,
       "10 sec","",0,
       "15 sec","",0
     );
