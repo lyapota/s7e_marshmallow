@@ -1,12 +1,21 @@
 #!/bin/bash
-# Jesse kernel build script v0.2
-# modified by lyapota
+# Prometheus kernel for Samsung Galaxy S7 build script by lyapota
 
-MODEL=$1
+##################### VARIANTS #####################
+#
+# xx   = International Exynos & Duos, Canadian Exynos
+#        SM-G930F, SM-G930FD, SM-G930X, SM-G930W8
+#        SM-G935F, SM-G935FD, SM-G935X, SM-G935W8
+#
+# kor  = Korean Exynos
+#        SM-G930K, SM-G930L, SM-G930S
+#
+###################### CONFIG ######################
 
-if [ x$1 = x ]
-then MODEL=hero2lte
-fi
+[ "$1" ] && MODEL=$1
+[ "$MODEL" ] || MODEL=hero2lte
+[ "$2" ] && VARIANT=$2
+[ "$VARIANT" ] || VARIANT=xx
 
 ARCH=arm64
 
@@ -35,17 +44,39 @@ DTC=$BUILD_KERNEL_OUT_DIR/scripts/dtc/dtc
 
 case $MODEL in
 herolte)
-	DTSFILES="exynos8890-herolte_eur_open_00 exynos8890-herolte_eur_open_01
-		exynos8890-herolte_eur_open_02 exynos8890-herolte_eur_open_03
-		exynos8890-herolte_eur_open_04 exynos8890-herolte_eur_open_08
-		exynos8890-herolte_eur_open_09"
+	case $VARIANT in
+	can|eur|xx|duos)
+		DTSFILES="exynos8890-herolte_eur_open_00 exynos8890-herolte_eur_open_01
+				exynos8890-herolte_eur_open_02 exynos8890-herolte_eur_open_03
+				exynos8890-herolte_eur_open_04 exynos8890-herolte_eur_open_08
+				exynos8890-herolte_eur_open_09"
+		;;
+	kor|skt|ktt|lgt)
+		DTSFILES="exynos8890-herolte_kor_all_00 exynos8890-herolte_kor_all_01
+				exynos8890-herolte_kor_all_02 exynos8890-herolte_kor_all_03
+				exynos8890-herolte_kor_all_04 exynos8890-herolte_kor_all_08"
+		;;
+	*) abort "Unknown variant: $VARIANT" ;;
+	esac
 	;;
 hero2lte)
-	DTSFILES="exynos8890-hero2lte_eur_open_00 exynos8890-hero2lte_eur_open_01
-		exynos8890-hero2lte_eur_open_03 exynos8890-hero2lte_eur_open_04
-		exynos8890-hero2lte_eur_open_08"
+	case $VARIANT in
+	can|eur|xx|duos)
+		DTSFILES="exynos8890-hero2lte_eur_open_00 exynos8890-hero2lte_eur_open_01
+				exynos8890-hero2lte_eur_open_03 exynos8890-hero2lte_eur_open_04
+				exynos8890-hero2lte_eur_open_08"
+		;;
+	kor|skt|ktt|lgt)
+		DTSFILES="exynos8890-hero2lte_kor_all_00 exynos8890-hero2lte_kor_all_01
+				exynos8890-hero2lte_kor_all_03 exynos8890-hero2lte_kor_all_04
+				exynos8890-hero2lte_kor_all_08"
+		;;
+	*) abort "Unknown variant: $VARIANT" ;;
+	esac
 	;;
+*) abort "Unknown device: $DEVICE" ;;
 esac
+
 
 INSTALLED_DTIMAGE_TARGET=${BUILD_KERNEL_OUT_DIR}/dt.img
 DTBTOOL=$BUILD_KERNEL_DIR/tools/dtbtool
