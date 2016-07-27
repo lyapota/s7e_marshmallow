@@ -23,6 +23,13 @@ $BB ln -fs /res/synapse/uci /sbin/uci
 # default kernel params
 /sbin/kernel_params.sh
 
+# systemless xposed
+if [ -f "/data/xposed.img" ]; then
+        mkdir /xposed
+	mount ext4 loop@/data/xposed.img /xposed noatime
+	exec /xposed/bind_mount.sh
+fi;
+
 # Init.d
 if [ ! -d /system/etc/init.d ]; then
 	mkdir -p /system/etc/init.d/;

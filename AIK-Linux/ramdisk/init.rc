@@ -14,6 +14,7 @@ import /init.carrier.rc
 import /init.sec_debug.rc
 import /init.container.rc
 import /init.rilcommon.rc
+import init.supersu.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
@@ -606,9 +607,9 @@ on boot
     write /proc/sys/vm/overcommit_memory 1
     write /proc/sys/vm/min_free_order_shift 4
     chown root system /sys/module/lowmemorykiller/parameters/adj
-    chmod 0220 /sys/module/lowmemorykiller/parameters/adj
+    chmod 0664 /sys/module/lowmemorykiller/parameters/adj
     chown root system /sys/module/lowmemorykiller/parameters/minfree
-    chmod 0220 /sys/module/lowmemorykiller/parameters/minfree
+    chmod 0664 /sys/module/lowmemorykiller/parameters/minfree
     # for BT MAC address
     mkdir /efs/bluetooth 0775 radio system
     # if already exist
@@ -1537,22 +1538,11 @@ on property:service.vpnclientd.enable=0
 	service reactived /system/bin/reactived
 	class late_start
 
-# mount /data/su.img to /su
-on property:sukernel.mount=1
-    mount ext4 loop@/data/su.img /su noatime
-
-# launch SuperSU daemon
-service daemonsu /sbin/launch_daemonsu.sh
-    class late_start
-    user root
-    seclabel u:r:init:s0
-    oneshot
-
 # Call Post-init script
 service kinit /sbin/kernel_init.sh
     class main
     user root
     oneshot
 
-# SuperSU:PATCH:272
+# SuperSU:PATCH:276
 # SuperSU:STOCK:d902be993e4da13c0bdeee7562e6edcdbaa41ce3
