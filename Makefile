@@ -416,7 +416,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Wno-switch-bool \
 		   -Wno-switch-enum \
 		   -Wno-format-security \
-		   -std=gnu89
+		   -std=gnu89 \
 		   -Wno-memset-transposed-args
 
 KBUILD_AFLAGS_KERNEL :=
