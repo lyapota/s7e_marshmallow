@@ -23,7 +23,7 @@ ifeq ($(ARCH),x86_64)
 endif
 
 ifeq ($(ARCH),arm)
-        CFLAGS += -I../../../arch/arm/include -mfpu=neon-vfpv4
+        CFLAGS += -I../../../arch/arm/include -mfpu=neon
         HAS_NEON = yes
 endif
 ifeq ($(ARCH),arm64)
