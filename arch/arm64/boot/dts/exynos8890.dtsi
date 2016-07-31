@@ -409,19 +409,7 @@
 		cl1_jig_boot_max_qos = <1456000>;
 		cl1_reboot_limit_freq = <728000>;
 
-		low_cl1_max_support_idx_table = < 7	   /* Number of online core is 0 */
-					      3    /* Number of online core is 1 */
-					      3    /* Number of online core is 2 */
-					      5    /* Number of online core is 3 */
-					      5 >; /* Number of online core is 4 */
-
-		mid_cl1_max_support_idx_table = < 7	   /* Number of online core is 0 */
-					      3    /* Number of online core is 1 */
-					      3    /* Number of online core is 2 */
-					      4    /* Number of online core is 3 */
-					      4 >; /* Number of online core is 4 */
-
-		high_cl1_max_support_idx_table = < 7	   /* Number of online core is 0 */
+		cl1_max_support_idx_table = < 7	   /* Number of online core is 0 */
 					      1    /* Number of online core is 1 */
 					      1    /* Number of online core is 2 */
 					      3    /* Number of online core is 3 */

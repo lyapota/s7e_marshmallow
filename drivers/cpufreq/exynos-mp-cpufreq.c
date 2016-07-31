@@ -2755,19 +2755,8 @@ static int exynos_mp_cpufreq_parse_dt(struct device_node *np, cluster_type cl)
 		ptr->max_support_idx_table = kzalloc(sizeof(unsigned int)
 				* (NR_CLUST1_CPUS + 1), GFP_KERNEL);
 
-		/* For Grade D,E phones, use stock freq_table */
-		if (asv_big < 7) {
-		ret = of_property_read_u32_array(np, "low_cl1_max_support_idx_table",
+		ret = of_property_read_u32_array(np, "cl1_max_support_idx_table",
 				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
-		/* For Grade C phones, use mid OC freq_table */
-		} else if (asv_big < 11) {
-		ret = of_property_read_u32_array(np, "mid_cl1_max_support_idx_table",
-				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
-		/* Grade A,B phones? That's amazing, let's unleash the Exynos */
-		} else {
-		ret = of_property_read_u32_array(np, "high_cl1_max_support_idx_table",
-				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
-		}
 
 		if (ret < 0)
 			return -ENODEV;
