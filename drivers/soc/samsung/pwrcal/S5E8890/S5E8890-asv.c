@@ -582,15 +582,18 @@ static int dvfsbig_get_asv_table(unsigned int *table)
 	for (lv = 0; lv < max_lv; lv++) {
 		table[lv] = get_asv_voltage(cal_asv_dvfs_big, lv) - (asv_vol_step * arg_vdd_uv);
 		if (lv > 18) {
-                	if (table[lv-1] - (asv_vol_step * 2) > 550000)
+                	if (table[lv-1] - (asv_vol_step * 2) > 575000)
 				table[lv] = table[lv-1] - (asv_vol_step * 2);
 			else
-				table[lv] = 550000;
+				table[lv] = 575000;
 		}
 	}
 
 	for (lv = 2; lv >= 0; lv--)
-		table[lv] = table[lv+1] + (asv_vol_step * 10);
+		if (table[lv+1] + (asv_vol_step * 8) < 1450000)
+			table[lv] = table[lv+1] + (asv_vol_step * 8);
+		else
+			table[lv] = 1450000;
 
 	return max_lv;
 }
@@ -604,15 +607,18 @@ static int dvfslittle_get_asv_table(unsigned int *table)
 	for (lv = 0; lv < max_lv; lv++) {
 		table[lv] = get_asv_voltage(cal_asv_dvfs_little, lv) - (asv_vol_step * arg_vdd_uv);
 		if (lv > 14) {
-                	if (table[lv-1] - (asv_vol_step * 2) > 550000)
+                	if (table[lv-1] - (asv_vol_step * 2) > 575000)
 				table[lv] = table[lv-1] - (asv_vol_step * 2);
 			else
-				table[lv] = 550000;
+				table[lv] = 575000;
 		}
 	}
 
 	for (lv = 3; lv >= 0; lv--)
-		table[lv] = table[lv+1] + (asv_vol_step * 10);
+		if (table[lv+1] + (asv_vol_step * 8) < 1300000)
+			table[lv] = table[lv+1] + (asv_vol_step * 8);
+		else
+			table[lv] = 1300000;
 
 	return max_lv;
 }
@@ -626,17 +632,17 @@ static int dvfsg3d_get_asv_table(unsigned int *table)
 	for (lv = 0; lv < max_lv; lv++) {
 		table[lv] = get_asv_voltage(cal_asv_dvfs_g3d, lv) - (asv_vol_step * arg_vdd_uv);
 		if (lv > 8) {
-			if (table[lv-1] - (asv_vol_step * 2) > 550000)
-	        		table[lv] = table[lv-1] - (asv_vol_step * 4);
+			if (table[lv-1] - (asv_vol_step * 2) > 575000)
+	        		table[lv] = table[lv-1] - (asv_vol_step * 2);
 			else
-	        		table[lv] = 550000;
+	        		table[lv] = 575000;
 		}
 	}
 
-	if (table[1] + (asv_vol_step * 8) < 850000)
+	if (table[1] + (asv_vol_step * 8) < 950000)
 	        table[0] = table[1] + (asv_vol_step * 8);
 	else
-	        table[0] = 850000;
+	        table[0] = 950000;
 
 	return max_lv;
 }
