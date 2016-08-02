@@ -8,9 +8,7 @@ case "$1" in
 	queue)
 		if [ -f /sys/block/sda/queue/"$2" ]; then
 			if [[ ! -z $3 ]]; then
-				for i in /sys/block/*/queue; do
-					$BB echo "$3" > "$i"/"$2" 2> /dev/null;
-				done;
+				$BB echo "$3" > /sys/block/sda/queue/"$2" 2> /dev/null;
 			fi;
 
 			$BB echo $($BB cat /sys/block/sda/queue/"$2");
@@ -19,9 +17,7 @@ case "$1" in
 	queue_ext)
 		if [ -f /sys/block/mmcblk0/queue/"$2" ]; then
 			if [[ ! -z $3 ]]; then
-				for i in /sys/block/*/queue; do
-					$BB echo "$3" > "$i"/"$2" 2> /dev/null;
-				done;
+				$BB echo "$3" > /sys/block/mmcblk0/queue/"$2" 2> /dev/null;
 			fi;
 
 			$BB echo $($BB cat /sys/block/mmcblk0/queue/"$2");
