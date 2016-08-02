@@ -104,6 +104,9 @@ static struct exynos_dvfs_info *exynos_info[CL_END];
 static unsigned int volt_offset;
 static struct cpufreq_freqs *freqs[CL_END];
 
+static int arg_big_hp2 = 0;
+static int arg_big_hp4 = 0;
+
 static DEFINE_MUTEX(cpufreq_lock);
 static DEFINE_MUTEX(cpufreq_scale_lock);
 
@@ -2761,6 +2764,16 @@ static int exynos_mp_cpufreq_parse_dt(struct device_node *np, cluster_type cl)
 		if (ret < 0)
 			return -ENODEV;
 
+		if (arg_big_hp2 != 0) {
+			ptr->max_support_idx_table[1] = arg_big_hp2;
+			ptr->max_support_idx_table[2] = arg_big_hp2;
+		}
+
+		if (arg_big_hp4 != 0) {
+			ptr->max_support_idx_table[3] = arg_big_hp4;
+			ptr->max_support_idx_table[4] = arg_big_hp4;
+		}
+
 		/* change max_support_idx */
 		ptr->max_support_idx = ptr->max_support_idx_table[1];
 #endif
@@ -3087,3 +3100,17 @@ static void __exit exynos_mp_cpufreq_exit(void)
 	platform_device_unregister(&exynos_mp_cpufreq_device);
 }
 module_exit(exynos_mp_cpufreq_exit);
+
+static int __init cpufreq_read_big_hp2(char *str)
+{
+	get_option(&str, &arg_big_hp2);
+	return 1;
+}
+__setup("big_hp2=", cpufreq_read_big_hp2);
+
+static int __init cpufreq_read_big_hp4(char *str)
+{
+	get_option(&str, &arg_big_hp4);
+	return 1;
+}
+__setup("big_hp4=", cpufreq_read_big_hp4);

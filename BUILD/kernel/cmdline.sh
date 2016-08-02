@@ -39,9 +39,46 @@ else
         esac
 fi
 
+if [ ! -e $DIR_SEL/pr_big_hp.prop ]; then
+	big_hp2="4"
+	big_hp4="7"
+else
+	val1=`get_sel pr_big_hp.prop`
+        case $val1 in
+        	1)
+        	  big_hp2="big_hp2=4"
+        	  big_hp4="big_hp4=7"
+        	  ;;
+        	2)
+        	  big_hp2="big_hp2=3"
+        	  big_hp4="big_hp4=5"
+        	  ;;
+        	3)
+        	  big_hp2="big_hp2=2"
+        	  big_hp4="big_hp4=4"
+        	  ;;
+        	4)
+        	  big_hp2="big_hp2=2"
+        	  big_hp4="big_hp4=3"
+        	  ;;
+        	5)
+        	  big_hp2="big_hp2=1"
+        	  big_hp4="big_hp4=4"
+        	  ;;
+        	6)
+        	  big_hp2="big_hp2=1"
+        	  big_hp4="3"
+        	  ;;
+        	7)
+        	  big_hp2="big_hp2=1"
+        	  big_hp4="big_hp4=2"
+        	  ;;
+        esac
+fi
+
 ############
 ##set kernel new command line
 echo "patch kernel command line"
 cd /tmp/AIK/split_img
-/tmp/busybox sed -i "s/vdd_uv=0/$vdd_uv/" boot.img-zImage
+/tmp/busybox sed -i "s/vdd_uv=0 big_hp2=4 big_hp4=7/$vdd_uv $big_hp2 $big_hp4/" boot.img-zImage
 
