@@ -590,7 +590,7 @@ static int dvfsbig_get_asv_table(unsigned int *table)
 	}
 
 	for (lv = 2; lv >= 0; lv--)
-		if (table[lv+1] + (asv_vol_step * 8) < 1450000)
+		if (table[lv+1] + (asv_vol_step * 10) < 1450000)
 			table[lv] = table[lv+1] + (asv_vol_step * 8);
 		else
 			table[lv] = 1450000;
