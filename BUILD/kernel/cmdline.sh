@@ -67,7 +67,7 @@ else
         	  ;;
         	6)
         	  big_hp2="big_hp2=1"
-        	  big_hp4="3"
+        	  big_hp4="big_hp4=3"
         	  ;;
         	7)
         	  big_hp2="big_hp2=1"
