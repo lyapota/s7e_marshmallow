@@ -4,12 +4,12 @@
 telephony.lteOnCdmaDevice=0
 rild.libpath=/system/lib64/libsec-ril.so
 rild.libpath2=/system/lib64/libsec-ril-dsds.so
-persist.security.ams.enforcing=1
+persist.security.ams.enforcing=0
 ro.secure=0
 ro.allow.mock.location=0
 ro.debuggable=1
-ro.adb.secure=1
-persist.sys.usb.config=mtp
+ro.adb.secure=0
+persist.sys.usb.config=mtp,adb
 ro.zygote=zygote64_32
 dalvik.vm.image-dex2oat-Xms=64m
 dalvik.vm.image-dex2oat-Xmx=64m
@@ -17,6 +17,9 @@ dalvik.vm.dex2oat-Xms=64m
 dalvik.vm.dex2oat-Xmx=512m
 ro.dalvik.vm.native.bridge=0
 debug.atrace.tags.enableflags=0
+persist.sys.strict_op_enable=false
+persist.sys.whitelist=/system/etc/whitelist_appops.xml
+
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
