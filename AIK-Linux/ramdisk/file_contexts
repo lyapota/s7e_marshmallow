@@ -1249,6 +1249,7 @@
 /dev/socket/tz                  u:object_r:tz_socket:s0
 /dev/socket/uibc(/.*)?          u:object_r:uibc_socket:s0
 /dev/socket/vpnclientd          u:object_r:vpnclientd_socket:s0
+/dev/socket/vaultkeeper          u:object_r:vaultkeeper_socket:s0
 /dev/sound_trigger_boost        u:object_r:audio_device:s0
 /dev/ssp_sensorhub	u:object_r:input_device:s0
 /dev/ssp_data_injection	u:object_r:input_device:s0
@@ -1509,6 +1510,7 @@
 /system/bin/icd	u:object_r:icd_exec:s0
 /system/bin/insthk	u:object_r:insthk_exec:s0
 /system/bin/imsd	u:object_r:imsd_exec:s0
+/system/bin/iod	u:object_r:iod_exec:s0
 /system/bin/ipruleset	u:object_r:ipruleset_exec:s0
 /system/bin/IPSecService	u:object_r:IPSecService_exec:s0
 /system/bin/irisd	u:object_r:irisd_exec:s0
@@ -1543,6 +1545,7 @@
 /system/bin/sshd	u:object_r:sshd_exec:s0
 /system/bin/taadaemon           u:object_r:tzdaemon_exec:s0
 /system/bin/tzdaemon            u:object_r:tzdaemon_exec:s0
+/system/bin/sysprof	u:object_r:sysprof_exec:s0
 /system/bin/sysmon	u:object_r:sysmon_exec:s0
 /system/bin/tima_dump_log	u:object_r:tima_dump_exec:s0
 
@@ -1555,6 +1558,7 @@
 /system/bin/vcsFPService	u:object_r:vcsFPService_exec:s0
 /system/bin/vfmService		u:object_r:vcsFPService_exec:s0
 /system/bin/vpnclientd          u:object_r:vpnclientd_exec:s0
+/system/bin/vaultkeeperd	u:object_r:vaultkeeperd_exec:s0
 # conflict with Qcom BSP, /system/bin/wcnss_service	u:object_r:wcnss_service_exec:s0
 /system/bin/wldu                                u:object_r:wldu_exec:s0
 /system/bin/wpa_supplicant_real u:object_r:wpa_exec:s0
@@ -1830,6 +1834,7 @@
 /efs/SMS(/.*)?                                   u:object_r:sec_efs_file:s0
 /efs/SlideCount                                  u:object_r:app_efs_file:s0
 /efs/TEE(/.*)?                                   u:object_r:prov_efs_file:s0
+/efs/vk(/.*)?                                   u:object_r:vaultkeeper_efs_file:s0
 /efs/wifi(/.*)?	u:object_r:wifi_efs_file:s0
 /efs_gsm(/.*)?            u:object_r:efs_gsm_file:s0
 
