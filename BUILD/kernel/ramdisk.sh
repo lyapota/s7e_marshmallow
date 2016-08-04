@@ -166,3 +166,12 @@ echo -e "echo \"$big_max\" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_fr
 echo -e "echo \"$gpu_max\" > /sys/devices/14ac0000.mali/max_clock;" >> $FILE_SCRIPT;
 echo -e "echo \"$reset_freq\" > /sys/power/cpufreq_reset_limit_sec;" >> $FILE_SCRIPT;
 cat $FILE_SCRIPT;
+
+
+if [ -e $DIR_SEL/pr_fix_fs.prop ]; then
+	val1=`get_sel pr_fix_fs.prop`
+	if [ "$val1" == "2" ]; then
+		cp -f /tmp/init /tmp/AIK/ramdisk/init
+	fi
+fi
+

@@ -271,6 +271,21 @@ menubox(
     );
 
 
+  #########
+  ## disable e2fsck fixes
+  #########
+
+    selectbox(
+      "F2FS support",
+      "allow use f2fs partitions",
+      "@apps",
+      "pr_fix_fs.prop",
+
+      "disalow","<b>stock</b>",1,
+      "allow","use patched init",0
+    );
+
+
 ###################################################################################################################
 #
 # STEP 5 - INSTALLING
