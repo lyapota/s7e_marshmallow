@@ -193,7 +193,7 @@ menubox(
 
     selectbox(
       "BIG(M1)",
-      "select <b>ABSOLUTE</b> MONGOOSE frequence",
+      "select <b>UP</b> scale MONGOOSE frequence",
       "@apps",
       "pr_big_max.prop",
       "2.3 GHz","<b>stock</b>",1,
