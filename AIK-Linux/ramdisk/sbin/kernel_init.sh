@@ -14,6 +14,7 @@ if [ ! -d /data/prometheus ]; then
 fi;
 
 # Synapse
+chmod 666 /sys/module/workqueue/parameters/power_efficient
 chmod -R 755 /res/*
 ln -fs /res/synapse/uci /sbin/uci
 /sbin/uci
