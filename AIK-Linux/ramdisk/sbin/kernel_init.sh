@@ -1,13 +1,12 @@
 #!/system/bin/sh
 
-BB=/system/xbin/busybox;
-
-# Mount root as RW to apply tweaks and settings
-$BB mount -o remount,rw /;
-$BB mount -o remount,rw /system;
-
 # Set SELinux permissive by default
 setenforce 0
+
+# Mount root as RW to apply tweaks and settings
+mount -t rootfs -o remount,rw rootfs
+mount -o remount,rw /system
+mount -o remount,rw /data
 
 # Make internal storage directory.
 if [ ! -d /data/prometheus ]; then
@@ -15,9 +14,8 @@ if [ ! -d /data/prometheus ]; then
 fi;
 
 # Synapse
-$BB mount -t rootfs -o remount,rw rootfs
-$BB chmod -R 755 /res/*
-$BB ln -fs /res/synapse/uci /sbin/uci
+chmod -R 755 /res/*
+ln -fs /res/synapse/uci /sbin/uci
 /sbin/uci
 
 # default kernel params
@@ -30,11 +28,15 @@ if [ -f "/data/xposed.img" ]; then
 	exec /xposed/bind_mount.sh
 fi;
 
-# Init.d
-if [ ! -d /system/etc/init.d ]; then
-	mkdir -p /system/etc/init.d/;
-	chown -R root.root /system/etc/init.d;
-	chmod 777 /system/etc/init.d/;
-	chmod 777 /system/etc/init.d/*;
-fi;
-$BB run-parts /system/etc/init.d
+# init.d support
+if [ ! -e /system/etc/init.d ]; then
+   mkdir /system/etc/init.d
+   chown -R root.root /system/etc/init.d
+   chmod -R 755 /system/etc/init.d
+fi
+
+# start init.d
+for FILE in /system/etc/init.d/*; do
+   sh $FILE >/dev/null
+done;
+
