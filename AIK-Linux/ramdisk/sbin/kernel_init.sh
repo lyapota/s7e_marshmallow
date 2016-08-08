@@ -1,17 +1,7 @@
 #!/system/bin/sh
 
-# Set SELinux permissive by default
-setenforce 0
-
 # Mount root as RW to apply tweaks and settings
 mount -t rootfs -o remount,rw rootfs
-mount -o remount,rw /system
-mount -o remount,rw /data
-
-# Make internal storage directory.
-if [ ! -d /data/prometheus ]; then
-	mkdir /data/prometheus
-fi;
 
 # Synapse
 chmod 666 /sys/module/workqueue/parameters/power_efficient
@@ -27,6 +17,15 @@ if [ -f "/data/xposed.img" ]; then
         mkdir /xposed
 	mount ext4 loop@/data/xposed.img /xposed noatime
 	exec /xposed/bind_mount.sh
+fi;
+
+mount -t rootfs -o remount,ro rootfs
+mount -o remount,rw /system
+mount -o remount,rw /data
+
+# Make internal storage directory.
+if [ ! -d /data/prometheus ]; then
+	mkdir /data/prometheus
 fi;
 
 # init.d support
