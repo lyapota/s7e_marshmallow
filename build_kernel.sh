@@ -32,7 +32,7 @@ BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
 export PATH=$(pwd)/bin:$PATH
 
-KERNEL_VERSION="1.3.2"
+KERNEL_VERSION="1.4.0"
 KERNEL_NAME="-prometheus"
 export LOCALVERSION=${KERNEL_NAME}-v${KERNEL_VERSION}
 
