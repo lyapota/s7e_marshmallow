@@ -23,7 +23,6 @@ show_progress(0.08, "-2000");
 
     ui_print("|-> clean system");
 	delete_recursive("/system/app/TuiService");
-	delete_recursive("/system/app/mcRegistry");
 	delete_recursive("/system/kern_sec_info1");
 	delete_recursive("/system/kern_sec_info2");
 	delete_recursive("/system/kern_sec_info3");
@@ -37,6 +36,7 @@ show_progress(0.08, "-2000");
 	delete_recursive("/system/app/mcRegistry");
         package_extract_dir("system/app", "/system/app");
         set_metadata_recursive("/system/app/mcRegistry", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644);
+        package_extract_dir("system/vendor", "/system/vendor");
 
     ui_print("|-> extract kernel");
         package_extract_dir("kernel", "/tmp");
