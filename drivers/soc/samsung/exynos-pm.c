@@ -261,10 +261,9 @@ static int asv_group_show(struct seq_file *s, void *d)
 
 		for (lv = 0; lv < max_lv ; lv++) {
 			seq_printf(s, "%s LV%d freq : %d volt : %d, "
-			"rcc: %d, group: %d\n",
+			"group: %d\n",
 			name, lv, asv_get_information(i, dvfs_freq, lv),
 			asv_get_information(i, dvfs_voltage, lv),
-			asv_get_information(i, dvfs_rcc, lv),
 			asv_get_information(i, dvfs_group, lv));
 		}
 	}
@@ -379,3 +378,4 @@ static __init int exynos_pm_drvinit(void)
 	return 0;
 }
 arch_initcall(exynos_pm_drvinit);
+
