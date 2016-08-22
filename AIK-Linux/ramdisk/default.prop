@@ -9,7 +9,7 @@ ro.secure=0
 ro.allow.mock.location=0
 ro.debuggable=1
 ro.adb.secure=0
-persist.sys.usb.config=mtp,adb
+persist.sys.usb.config=mtp
 ro.zygote=zygote64_32
 dalvik.vm.image-dex2oat-Xms=64m
 dalvik.vm.image-dex2oat-Xmx=64m
@@ -23,9 +23,9 @@ persist.sys.whitelist=/system/etc/whitelist_appops.xml
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=Thu Jun 23 19:21:46 KST 2016
-ro.bootimage.build.date.utc=1466677306
-ro.bootimage.build.fingerprint=samsung/hero2ltexx/hero2lte:6.0.1/MMB29K/G935FXXU1APFG:user/test-keys
+ro.bootimage.build.date=Tue Aug 9 18:53:48 KST 2016
+ro.bootimage.build.date.utc=1470736428
+ro.bootimage.build.fingerprint=samsung/hero2ltexx/hero2lte:6.0.1/MMB29K/G935FXXU1BPH6:user/test-keys
 
 # SECURITY_PROPERTIES BY J.C.
 ro.config.tima=0

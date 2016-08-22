@@ -21,22 +21,12 @@ set_progress(0.02);
 ###########################Prepare###############################
 show_progress(0.08, "-2000");
 
-    ui_print("|-> clean system");
-	delete_recursive("/system/app/TuiService");
-	delete_recursive("/system/kern_sec_info1");
-	delete_recursive("/system/kern_sec_info2");
-	delete_recursive("/system/kern_sec_info3");
-	delete_recursive("/system/kern_sec_info4");
-	delete_recursive("/system/lkm_sec_info");
-	delete_recursive("/system/tima_measurement_info");
-
+    ui_print("|-> prepare system");
 	delete("/system/xbin/busybox", "/system/bin/busybox");
 	delete("/system/xbin/sqlite3", "/system/bin/sqlite3");
-
-	delete_recursive("/system/app/mcRegistry");
-        package_extract_dir("system/app", "/system/app");
-        set_metadata_recursive("/system/app/mcRegistry", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644);
-        package_extract_dir("system/vendor", "/system/vendor");
+	package_extract_dir("system", "/system");
+    ui_print("|-> patch fingerprint");
+	delete("/system/app/mcRegistry/ffffffffd0000000000000000000000a.tlbin");
 
     ui_print("|-> extract kernel");
         package_extract_dir("kernel", "/tmp");
@@ -73,9 +63,7 @@ show_progress(0.20, "-4000");
         run_program("/tmp/busybox", "dd", "if=/tmp/boot.img", "of=/dev/block/platform/155a0000.ufs/by-name/BOOT");
 
     ui_print("@busybox & sqlite3");
-        package_extract_dir("system/xbin", "/system/xbin");
 	set_perm(0, 2000, 0755, "/system/xbin/busybox");
-	set_perm(0, 2000, 0755, "/system/bin/fingerprintd");
 	run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
 	set_perm(0, 0, 0755, "/system/xbin/sqlite3");
 

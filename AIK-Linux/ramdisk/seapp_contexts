@@ -43,6 +43,7 @@ user=spay seinfo=spay domain=platform_app type=platform_app_data_file
 user=system seinfo=spay domain=platform_app type=platform_app_data_file
 user=_app seinfo=samsung name=com.sec.android.mimage.photoretouching domain=sec_untrusted_app type=app_data_file levelFrom=user
 user=system seinfo=platform name=com.sec.knox.containeragent domain=knox_system_app type=system_app_data_file
+user=system seinfo=platform name=com.sec.knox.switcher domain=system_app type=share_via_app_data_file
 user=system seinfo=platform name=com.policydm domain=policyloader_app type=policyloader_app_data_file
 user=_app seinfo=trustonicpartner domain=trustonicpartner_app type=app_data_file levelFrom=user
 user=_app seinfo=good_trustonicpartner domain=trustonicpartner_app type=app_data_file levelFrom=user

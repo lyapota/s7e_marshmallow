@@ -35,6 +35,8 @@ on init
 
     loglevel 3
 
+    ffu
+
     # SEC_SELINUX
     # for audit message
     chown system system /proc/avc_msg
@@ -1107,6 +1109,17 @@ on property:sys.powerctl=*
 on property:sys.sysctl.extra_free_kbytes=*
     write /proc/sys/vm/extra_free_kbytes ${sys.sysctl.extra_free_kbytes}
 
+# Activate Background Compaction
+on property:sys.sysctl.compact_memory=1
+    setprop sys.sysctl.compact_memory 0
+    start compact_memory
+
+service compact_memory /sbin/bgcompact
+    user root
+    seclabel u:r:sswap:s0
+    oneshot
+    disabled
+
 # "tcp_default_init_rwnd" Is too long!
 on property:sys.sysctl.tcp_def_init_rwnd=*
     write /proc/sys/net/ipv4/tcp_default_init_rwnd ${sys.sysctl.tcp_def_init_rwnd}
@@ -1325,12 +1338,12 @@ service media /system/bin/mediaserver
 service apaservice /system/bin/apaservice
     class main
     user jack
-    group system inet sdcard_rw sdcard_r media_rw shell
+    group inet sdcard_rw sdcard_r media_rw shell
 
 service jackservice /system/bin/jackservice
     class main
     user jack
-    group system audio inet shell
+    group audio inet shell
     
 # One shot invocation to deal with encrypted volume.
 service defaultcrypto /system/bin/vdc --wait cryptfs mountdefaultencrypted
@@ -1539,6 +1552,3 @@ on property:service.vpnclientd.enable=0
 # Reactivation lock
 	service reactived /system/bin/reactived
 	class late_start
-
-# SuperSU:PATCH:276
-# SuperSU:STOCK:d902be993e4da13c0bdeee7562e6edcdbaa41ce3
