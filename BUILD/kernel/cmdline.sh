@@ -76,9 +76,30 @@ else
         esac
 fi
 
+#############
+## set tmu_cool
+if [ ! -e $DIR_SEL/pr_tmu_cool.prop ]; then
+	tmu_cool="tmu_cool=0"
+else
+	val1=`get_sel pr_tmu_cool.prop`
+        case $val1 in
+
+        	1)
+        	  tmu_cool="tmu_cool=0"
+        	  ;;
+        	2)
+        	  tmu_cool="tmu_cool=1"
+        	  ;;
+        	3)
+        	  tmu_cool="tmu_cool=2"
+        	  ;;
+        esac
+fi
+
+
 ############
 ##set kernel new command line
 echo "patch kernel command line"
 cd /tmp/AIK/split_img
-/tmp/busybox sed -i "s/vdd_uv=0 big_hp2=4 big_hp4=7/$vdd_uv $big_hp2 $big_hp4/" boot.img-zImage
+/tmp/busybox sed -i "s/vdd_uv=0 big_hp2=4 big_hp4=7 tmu_cool=0/$vdd_uv $big_hp2 $big_hp4 $tmu_cool/" boot.img-zImage
 

@@ -42,7 +42,7 @@ ini_set("rom_name",             "Prometheus");
 ini_set("rom_version",          "1.5.0");
 ini_set("rom_author",           "lyapota");
 ini_set("rom_device",           "Samsung SM-G935F/G930F");
-ini_set("rom_date",             "22 August 2016");
+ini_set("rom_date",             "23 August 2016");
 
 ini_set("force_colorspace", "rgba");
 
@@ -252,6 +252,22 @@ menubox(
       "-12.50 mV","",0,
       "-18.75 mV","",0,
       "-25.00 mV","",0
+    );
+      
+
+  #########
+  ## tmu cooling shift
+  #########
+
+    selectbox(
+      "cooling shift",
+      "shift temperature levels to this value",
+      "@apps",
+      "pr_tmu_cool.prop",
+
+      "  0 degrees","<b>stock</b>",1,
+      " +5 degrees","",0,
+      "+10 degrees","",0
     );
       
 

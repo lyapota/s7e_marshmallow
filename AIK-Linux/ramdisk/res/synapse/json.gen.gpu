@@ -56,14 +56,16 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"GPU thermal control",
-		description:"Cooling device policy. Turn it off if you know what you do only."
+		description:"Cooling device policy. Disable only if you know what you are doing."
 	}},
-	{ SCheckBox:{
-		description:" Enabling/Disabling TMU. In disabled state will give a 3D performance bump, but at the cost is damage device risk. Default is Enabled.\n",
-		label:"Enable TMU",
+	{ SOptionList:{
+		title:"On/Off GPU Thermal Manager",
+		description:" Your own risk to disable...\n",
        	 	default:`cat /sys/devices/14ac0000.mali/tmu`,
-		action:"generic /sys/devices/14ac0000.mali/tmu"
-    	}},
+		action:"generic /sys/devices/14ac0000.mali/tmu",
+		values:{ 0:"Disabled", 1:"Enabled"
+		}
+	}},
 	{ SSpacer:{
 		height:1
 	}},

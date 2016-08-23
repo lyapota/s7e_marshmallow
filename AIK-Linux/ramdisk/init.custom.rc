@@ -1,4 +1,4 @@
-on early-boot
+on boot
     start kinit
     
 service kinit /sbin/kernel_init.sh
