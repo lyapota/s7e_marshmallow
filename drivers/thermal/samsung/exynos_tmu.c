@@ -1114,7 +1114,7 @@ static int exynos_map_dt_data(struct platform_device *pdev)
 		of_property_read_u32(pdev->dev.of_node, node_name, &value);
 		if (!value)
 			dev_err(&pdev->dev, "No trigger_level data\n");
-		if (pdata->d_type == CLUSTER0 || pdata->d_type == CLUSTER1 || pdata->d_type == GPU)
+		if (i > 0 && value < 105 && (pdata->d_type == CLUSTER0 || pdata->d_type == CLUSTER1 || pdata->d_type == GPU))
 			value += arg_tmu_cooling;
 		pdata->trigger_levels[i] = value;
 
@@ -1145,7 +1145,7 @@ static int exynos_map_dt_data(struct platform_device *pdev)
 						&value);
 		if (!value)
 			dev_err(&pdev->dev, "No cooling temp level data\n");
-		if (pdata->d_type == CLUSTER0 || pdata->d_type == CLUSTER1 || pdata->d_type == GPU)
+		if (i > 0 && value < 105 && (pdata->d_type == CLUSTER0 || pdata->d_type == CLUSTER1 || pdata->d_type == GPU))
 			value += arg_tmu_cooling;
 		pdata->freq_tab[i].temp_level = value;
 	}
@@ -1241,6 +1241,7 @@ static int exynos_tmu_ect_set_information(struct platform_device *pdev)
 	struct exynos_tmu_platform_data *pdata = data->pdata;
 	struct ect_ap_thermal_function *function;
 	int hotplug_threshold = 0, hotplug_flag = 0;
+	u32 value;
 
 	if (pdata->tmu_name == NULL)
 		return 0;
@@ -1259,7 +1260,10 @@ static int exynos_tmu_ect_set_information(struct platform_device *pdev)
 
 	/* setting trigger */
 	for (i = 0; i < function->num_of_range; ++i) {
-		pdata->trigger_levels[i] = function->range_list[i].lower_bound_temperature;
+		value = function->range_list[i].lower_bound_temperature;
+		if (i > 0 && value < 105 && (pdata->d_type == CLUSTER0 || pdata->d_type == CLUSTER1 || pdata->d_type == GPU))
+			value += arg_tmu_cooling;
+		pdata->trigger_levels[i] = value;
 		pdata->trigger_enable[i] = true;
 
 		if (function->range_list[i].sw_trip)
@@ -1267,14 +1271,95 @@ static int exynos_tmu_ect_set_information(struct platform_device *pdev)
 		else
 			pdata->trigger_type[i] = (i == function->num_of_range - 1 ? HW_TRIP : THROTTLE_ACTIVE);
 
-		if (pdata->d_type == CLUSTER1 && function->range_list[i].max_frequency >= 2704000)
-			function->range_list[i].max_frequency = -1;
-		if (pdata->d_type == CLUSTER0 && function->range_list[i].max_frequency >= 1586000)
-			function->range_list[i].max_frequency = -1;
-		if (pdata->d_type == GPU && function->range_list[i].max_frequency >= 650000)
-			function->range_list[i].max_frequency = -1;
+		if (pdata->d_type == CLUSTER1) {
+			switch (i) {
+			case 0:
+				function->range_list[i].max_frequency = -1;
+				break;
+			case 1:
+				function->range_list[i].max_frequency = 2808000;
+				break;
+			case 2:
+				function->range_list[i].max_frequency = 2704000;
+				break;
+			case 3:
+				function->range_list[i].max_frequency = 2392000;
+				break;
+			case 4:
+				function->range_list[i].max_frequency = 1872000;
+				break;
+			case 5:
+				function->range_list[i].max_frequency = 1144000;
+				break;
+			case 6:
+				function->range_list[i].max_frequency = 832000;
+				break;
+			case 7:
+				function->range_list[i].max_frequency = 728000;
+				break;
+			}
+		}
 
-		pdata->freq_tab[i].temp_level = function->range_list[i].lower_bound_temperature;
+		if (pdata->d_type == CLUSTER0) {
+			switch (i) {
+			case 0:
+				function->range_list[i].max_frequency = -1;
+				break;
+			case 1:
+				function->range_list[i].max_frequency = 1794000;
+				break;
+			case 2:
+				function->range_list[i].max_frequency = 1586000;
+				break;
+			case 3:
+				function->range_list[i].max_frequency = 1482000;
+				break;
+			case 4:
+				function->range_list[i].max_frequency = 1170000;
+				break;
+			case 5:
+				function->range_list[i].max_frequency = 962000;
+				break;
+			case 6:
+				function->range_list[i].max_frequency = 650000;
+				break;
+			case 7:
+				function->range_list[i].max_frequency = 442000;
+				break;
+			}
+		}
+
+
+		if (pdata->d_type == GPU) {
+			switch (i) {
+			case 0:
+				function->range_list[i].max_frequency = -1;
+				break;
+			case 1:
+				function->range_list[i].max_frequency = 806000;
+				break;
+			case 2:
+				function->range_list[i].max_frequency = 702000;
+				break;
+			case 3:
+				function->range_list[i].max_frequency = 650000;
+				break;
+			case 4:
+				function->range_list[i].max_frequency = 600000;
+				break;
+			case 5:
+				function->range_list[i].max_frequency = 546000;
+				break;
+			case 6:
+				function->range_list[i].max_frequency = 338000;
+				break;
+			case 7:
+				function->range_list[i].max_frequency = 260000;
+				break;
+			}
+		}
+
+		pdata->freq_tab[i].temp_level = value;
 		pdata->freq_tab[i].freq_clip_max = function->range_list[i].max_frequency;
 		dev_info(&pdev->dev, "[%d] Temp_level : %d, freq_clip_max: %d \n",
 			i, pdata->freq_tab[i].temp_level, pdata->freq_tab[i].freq_clip_max);
@@ -1346,15 +1431,12 @@ static int exynos_tmu_probe(struct platform_device *pdev)
 		goto err;
 	}
 
-/* stay with DTB values */
-#if 0
 #if defined(CONFIG_ECT)
 	ret = exynos_tmu_ect_set_information(pdev);
 	if (ret) {
 		dev_err(&pdev->dev, "Failed to ect\n");
 		goto err;
 	}
-#endif
 #endif
 
 	ret = exynos_tmu_initialize(pdev);
@@ -1561,6 +1643,8 @@ static struct platform_driver exynos_tmu_driver = {
 static int __init tmu_read_cooling(char *str)
 {
 	get_option(&str, &arg_tmu_cooling);
+	if (arg_tmu_cooling)
+		arg_tmu_cooling = arg_tmu_cooling * 5;
 	return 1;
 }
 __setup("tmu_cool=", tmu_read_cooling);
