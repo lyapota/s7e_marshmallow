@@ -1114,7 +1114,9 @@ static int exynos_map_dt_data(struct platform_device *pdev)
 		of_property_read_u32(pdev->dev.of_node, node_name, &value);
 		if (!value)
 			dev_err(&pdev->dev, "No trigger_level data\n");
-		pdata->trigger_levels[i] = value + arg_tmu_cooling;
+		if (pdata->d_type == CLUSTER0 || pdata->d_type == CLUSTER1 || pdata->d_type == GPU)
+			value += arg_tmu_cooling;
+		pdata->trigger_levels[i] = value;
 
 		snprintf(node_name, sizeof(node_name), "trigger_enable_%d", i);
 		of_property_read_u32(pdev->dev.of_node, node_name, &value);
@@ -1143,7 +1145,9 @@ static int exynos_map_dt_data(struct platform_device *pdev)
 						&value);
 		if (!value)
 			dev_err(&pdev->dev, "No cooling temp level data\n");
-		pdata->freq_tab[i].temp_level = value + arg_tmu_cooling;
+		if (pdata->d_type == CLUSTER0 || pdata->d_type == CLUSTER1 || pdata->d_type == GPU)
+			value += arg_tmu_cooling;
+		pdata->freq_tab[i].temp_level = value;
 	}
 
 	pdata->hotplug_enable = of_property_read_bool(pdev->dev.of_node, "hotplug_enable");
