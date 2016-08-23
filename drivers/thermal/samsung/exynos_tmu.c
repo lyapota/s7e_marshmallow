@@ -1277,10 +1277,10 @@ static int exynos_tmu_ect_set_information(struct platform_device *pdev)
 				function->range_list[i].max_frequency = -1;
 				break;
 			case 1:
-				function->range_list[i].max_frequency = 2808000;
+				function->range_list[i].max_frequency = 2704000;
 				break;
 			case 2:
-				function->range_list[i].max_frequency = 2704000;
+				function->range_list[i].max_frequency = 2600000;
 				break;
 			case 3:
 				function->range_list[i].max_frequency = 2392000;
@@ -1306,7 +1306,7 @@ static int exynos_tmu_ect_set_information(struct platform_device *pdev)
 				function->range_list[i].max_frequency = -1;
 				break;
 			case 1:
-				function->range_list[i].max_frequency = 1794000;
+				function->range_list[i].max_frequency = 1690000;
 				break;
 			case 2:
 				function->range_list[i].max_frequency = 1586000;
