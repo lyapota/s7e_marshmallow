@@ -1272,90 +1272,96 @@ static int exynos_tmu_ect_set_information(struct platform_device *pdev)
 			pdata->trigger_type[i] = (i == function->num_of_range - 1 ? HW_TRIP : THROTTLE_ACTIVE);
 
 		if (pdata->d_type == CLUSTER1) {
-			switch (i) {
-			case 0:
+			if (i == 0)
 				function->range_list[i].max_frequency = -1;
-				break;
-			case 1:
-				function->range_list[i].max_frequency = 2704000;
-				break;
-			case 2:
-				function->range_list[i].max_frequency = 2600000;
-				break;
-			case 3:
-				function->range_list[i].max_frequency = 2392000;
-				break;
-			case 4:
-				function->range_list[i].max_frequency = 1872000;
-				break;
-			case 5:
-				function->range_list[i].max_frequency = 1144000;
-				break;
-			case 6:
-				function->range_list[i].max_frequency = 832000;
-				break;
-			case 7:
-				function->range_list[i].max_frequency = 728000;
-				break;
+
+			if (arg_tmu_cooling) {
+				switch (i) {
+				case 1:
+					function->range_list[i].max_frequency = 2392000;
+					break;
+				case 2:
+					function->range_list[i].max_frequency = 2080000;
+					break;
+				case 3:
+					function->range_list[i].max_frequency = 2392000;
+					break;
+				case 4:
+					function->range_list[i].max_frequency = 1456000;
+					break;
+				case 5:
+					function->range_list[i].max_frequency = 1040000;
+					break;
+				case 6:
+					function->range_list[i].max_frequency = 728000;
+					break;
+				case 7:
+					function->range_list[i].max_frequency = 728000;
+					break;
+				}
 			}
 		}
 
-		if (pdata->d_type == CLUSTER0) {
-			switch (i) {
-			case 0:
+		if (pdata->d_type == CLUSTER0 && arg_tmu_cooling) {
+			if (i == 0)
 				function->range_list[i].max_frequency = -1;
-				break;
-			case 1:
-				function->range_list[i].max_frequency = 1690000;
-				break;
-			case 2:
-				function->range_list[i].max_frequency = 1586000;
-				break;
-			case 3:
-				function->range_list[i].max_frequency = 1482000;
-				break;
-			case 4:
-				function->range_list[i].max_frequency = 1170000;
-				break;
-			case 5:
-				function->range_list[i].max_frequency = 962000;
-				break;
-			case 6:
-				function->range_list[i].max_frequency = 650000;
-				break;
-			case 7:
-				function->range_list[i].max_frequency = 442000;
-				break;
+
+			if (arg_tmu_cooling) {
+				switch (i) {
+				case 1:
+					function->range_list[i].max_frequency = 1482000;
+					break;
+				case 2:
+					function->range_list[i].max_frequency = 1274000;
+					break;
+				case 3:
+					function->range_list[i].max_frequency = 1066000;
+					break;
+				case 4:
+					function->range_list[i].max_frequency = 858000;
+					break;
+				case 5:
+					function->range_list[i].max_frequency = 650000;
+					break;
+				case 6:
+					function->range_list[i].max_frequency = 442000;
+					break;
+				case 7:
+					function->range_list[i].max_frequency = 442000;
+					break;
+				}
 			}
 		}
 
 
-		if (pdata->d_type == GPU) {
-			switch (i) {
-			case 0:
+		if (pdata->d_type == GPU && arg_tmu_cooling) {
+			if (i == 0)
 				function->range_list[i].max_frequency = -1;
-				break;
-			case 1:
-				function->range_list[i].max_frequency = 806000;
-				break;
-			case 2:
-				function->range_list[i].max_frequency = 702000;
-				break;
-			case 3:
-				function->range_list[i].max_frequency = 650000;
-				break;
-			case 4:
-				function->range_list[i].max_frequency = 600000;
-				break;
-			case 5:
-				function->range_list[i].max_frequency = 546000;
-				break;
-			case 6:
-				function->range_list[i].max_frequency = 338000;
-				break;
-			case 7:
-				function->range_list[i].max_frequency = 260000;
-				break;
+
+			if (arg_tmu_cooling) {
+				switch (i) {
+				case 1:
+					function->range_list[i].max_frequency = 806000;
+					break;
+				case 2:
+					function->range_list[i].max_frequency = 702000;
+					break;
+				case 3:
+					function->range_list[i].max_frequency = 600000;
+					break;
+				case 4:
+					function->range_list[i].max_frequency = 546000;
+					break;
+				case 5:
+					function->range_list[i].max_frequency = 419000;
+					break;
+				case 6:
+					function->range_list[i].max_frequency = 260000;
+					break;
+				case 7:
+					function->range_list[i].max_frequency = 260000;
+					break;
+				}
 			}
 		}
 
