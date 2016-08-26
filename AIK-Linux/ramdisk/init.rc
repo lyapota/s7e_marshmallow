@@ -35,8 +35,6 @@ on init
 
     loglevel 3
 
-    ffu
-
     # SEC_SELINUX
     # for audit message
     chown system system /proc/avc_msg
@@ -160,7 +158,6 @@ on init
     write /proc/sys/net/ipv6/conf/all/accept_redirects 0
 
     # Create cgroup mount points for process groups
-    mkdir /dev/cpuctl
     mount cgroup none /dev/cpuctl cpu
     chown system system /dev/cpuctl
     chown system system /dev/cpuctl/tasks
@@ -178,7 +175,6 @@ on init
     write /dev/cpuctl/bg_non_interactive/cpu.rt_period_us 1000000
 
     # sets up initial cpusets for ActivityManager
-    mkdir /dev/cpuset
     mount cpuset none /dev/cpuset
 
     # this ensures that the cpusets are present and usable, but the device's
@@ -340,7 +336,6 @@ on post-fs
 
 on post-fs-data
     # Reload SE Android Policy
-    setprop selinux.reload_policy 1
 
     # sec_efs_file
     mkdir /efs/sec_efs 0775 radio system
@@ -1126,7 +1121,6 @@ on property:sys.sysctl.tcp_def_init_rwnd=*
 
 # Reload SE Android Policy for MDM
 on property:persist.security.mdm.policy=1
-    setprop selinux.reload_policy 1
 
 ## Daemon processes to be run by init.
 ##
@@ -1305,7 +1299,7 @@ service surfaceflinger /system/bin/surfaceflinger
     user system
     group graphics drmrpc
     onrestart restart zygote
-    writepid /dev/cpuset/system-background/tasks
+    writepid /dev/cpuset/foreground/tasks
     onrestart restart loc_launcher
     
 service SIDESYNC_service /system/bin/ss_conn_daemon
@@ -1501,15 +1495,50 @@ service eris /system/bin/eris
     oneshot
     disabled
 
-on property:selinux.sec.restorecon=1
-    restorecon_msc -RF /data
-    chown system system_access /data/security/aasa
-    chmod 2750 /data/security/aasa
-    
-# Reload SE Android Policy for MDM
-on property:persist.security.mdm.policy=1
-    setprop selinux.reload_policy 1
-# ] SEC_SELINUX_PORTING COMMON
+# otp
+service otp /system/bin/otp_server
+  user system
+  group system 
+  disabled
+
+on property:persist.security.tlc.otp=1  
+  start otp
+  setprop persist.security.tlc.otp 0
+
+# ccm
+  service ccm /system/bin/tlc_server CCM
+  user system
+  group system 
+  disabled
+
+on property:persist.security.tlc.ccm=1  
+  start ccm
+  setprop persist.security.tlc.ccm 0
+
+# dcm
+  service dcm /system/bin/tlc_server DCM
+  user system
+  group system 
+  disabled
+
+on property:persist.security.tlc.restartdcm=1
+  stop  dcm
+  setprop persist.security.tlc.dcm 1
+  setprop persist.security.tlc.restartdcm 0
+
+on property:persist.security.tlc.dcm=1  
+  start dcm
+  setprop persist.security.tlc.dcm 0
+
+# esecomm
+  service esecomm /system/bin/tlc_server ESECOMM
+  user system
+  group system 
+  disabled
+
+on property:persist.security.tlc.esecomm=1  
+  start esecomm
+  setprop persist.security.tlc.esecomm 0
 
 on property:sys.boot_completed=1
     write /sys/block/mmcblk0/queue/scheduler cfq
