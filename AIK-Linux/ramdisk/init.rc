@@ -14,8 +14,8 @@ import /init.carrier.rc
 import /init.sec_debug.rc
 import /init.container.rc
 import /init.rilcommon.rc
-import /init.supersu.rc
 import /init.custom.rc
+import init.supersu.rc
 
 
 on early-init
@@ -1646,5 +1646,5 @@ on property:service.vpnclientd.enable=0
 # Reactivation lock
 	service reactived /system/bin/reactived
 	class late_start
-# SuperSU:PATCH:276
-# SuperSU:STOCK:5b963e68e3e844741ab679c555b522ee16e5e90e
+# SuperSU:PATCH:278
+# SuperSU:STOCK:1003a9b2e1a83426370f1ff19c39732573945435
