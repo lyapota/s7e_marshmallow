@@ -12,7 +12,7 @@
 #
 ###################### CONFIG ######################
 
-[ "$1" ] && MODEL=$1
+[ "$1" ] && MODEL=herolte
 [ "$MODEL" ] || MODEL=hero2lte
 [ "$2" ] && VARIANT=$2
 [ "$VARIANT" ] || VARIANT=xx
@@ -32,7 +32,7 @@ BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
 export PATH=$(pwd)/bin:$PATH
 
-KERNEL_VERSION="1.5.3"
+KERNEL_VERSION="1.6.1"
 KERNEL_NAME="-prometheus"
 export LOCALVERSION=${KERNEL_NAME}-v${KERNEL_VERSION}
 
