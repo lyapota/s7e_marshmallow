@@ -12,9 +12,9 @@ cat << CTAG
 		description:""
 	}},
 	{ SOptionList:{
-		default:`cat proc/sys/net/ipv4/tcp_congestion_control`,
-		action:"generic proc/sys/net/ipv4/tcp_congestion_control",
-		values:[`while read values; do busybox printf "%s, \n" $values; done < proc/sys/net/ipv4/tcp_available_congestion_control`]
+		default:`cat /proc/sys/net/ipv4/tcp_congestion_control`,
+		action:"generic /proc/sys/net/ipv4/tcp_congestion_control",
+		values:[`while read values; do busybox printf "%s, \n" $values; done < /proc/sys/net/ipv4/tcp_available_congestion_control`]
 	}},
 	{ SPane:{
             title:"Wakelock control",

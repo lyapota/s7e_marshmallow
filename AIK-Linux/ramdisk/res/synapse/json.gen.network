@@ -16,9 +16,9 @@ cat << CTAG
 	{ SOptionList:{
 		title:"TCP Congestion Algorithm",
 		description:" ",
-		default:$(cat proc/sys/net/ipv4/tcp_congestion_control),
-		action:"generic proc/sys/net/ipv4/tcp_congestion_control",
-		values:[`while read values; do $BB printf "%s, \n" $values; done < proc/sys/net/ipv4/tcp_available_congestion_control`]
+		default:$(cat /proc/sys/net/ipv4/tcp_congestion_control),
+		action:"generic /proc/sys/net/ipv4/tcp_congestion_control",
+		values:[`while read values; do $BB printf "%s, \n" $values; done < /proc/sys/net/ipv4/tcp_available_congestion_control`]
 	}},
 	{ SSpacer:{
 		height:1
