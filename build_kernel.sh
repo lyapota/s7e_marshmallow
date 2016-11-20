@@ -234,8 +234,9 @@ FUNC_PACK_ZIP_FILE()
         sed -i "s/ini_set(\"rom_date\",.*\".*\");/ini_set(\"rom_date\",             \"${CURRENT_DATE}\");/g" META-INF/com/google/android/aroma-config
 
 	zip -gq $ZIP_NAME -r META-INF/ -x "*~"
-	zip -gq $ZIP_NAME -r system/ -x "*~" 
 	zip -gq $ZIP_NAME -r kernel/ -x "*~" 
+	zip -gq $ZIP_NAME -r su/ -x "*~" 
+	zip -gq $ZIP_NAME -r magisk/ -x "*~" 
 
 	if [ ! -f "$ZIP_FILE_TARGET" ]; then
 		exit -1

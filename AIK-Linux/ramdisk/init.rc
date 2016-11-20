@@ -33,11 +33,6 @@ on init
 
     loglevel 3
 
-    # SEC_SELINUX
-    # for audit message
-    chown system system /proc/avc_msg
-    chmod 0660 /proc/avc_msg
-
     # Backward compatibility
     symlink /system/etc /etc
     symlink /sys/kernel/debug /d
@@ -93,7 +88,7 @@ on init
 
     # Directory-target for where the secure container
     # imagefile directory will be bind-mounted
-    mkdir /mnt/secure/asec  0700 root root
+    mkdir /mnt/secure/asec 0700 root root
     mount tmpfs tmpfs /mnt/secure/asec mode=0700,uid=0,gid=0
     restorecon_recursive /mnt/secure/asec
 
@@ -362,6 +357,8 @@ on post-fs
     mount tmpfs tmpfs /mnt/secure/asec shared rec
 ## Samsung ODE <<<
 
+    mount tmpfs tmpfs /mnt/secure/asec shared rec
+
     # We chown/chmod /cache again so because mount is run as root + defaults
     chown system cache /cache
     chmod 0770 /cache
@@ -440,8 +437,6 @@ on post-fs-data
     mkdir /data/misc 01771 system misc
     mkdir /data/misc/adb 02750 system shell
 
-    # SEC_SELINUX
-    mkdir /data/misc/audit 0775 audit system 
     mkdir /data/misc/bluedroid 02770 bluetooth net_bt_stack
     # Fix the access permissions and group ownership for 'bt_config.conf'
     chmod 0660 /data/misc/bluedroid/bt_config.conf
@@ -1149,15 +1144,6 @@ on property:vold.decrypt=trigger_shutdown_framework
     class_reset late_start
     class_reset main
 
-on property:selinux.reload_policy=1
-    chown system system /sys/fs/selinux/enforce
-    chown -R system system /sys/fs/selinux/booleans
-    chown system system /sys/fs/selinux/commit_pending_bools
-
-# SEC_SELINUX
-on property:selinux.sec.restorecon=1
-    restorecon_msc -RF /data
-
 on property:sys.powerctl=*
     powerctl ${sys.powerctl}
 
@@ -1182,8 +1168,6 @@ service compact_memory /sbin/bgcompact
 on property:sys.sysctl.tcp_def_init_rwnd=*
     write /proc/sys/net/ipv4/tcp_default_init_rwnd ${sys.sysctl.tcp_def_init_rwnd}
 
-# Reload SE Android Policy for MDM
-on property:persist.security.mdm.policy=1
 
 ## Daemon processes to be run by init.
 ##

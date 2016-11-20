@@ -144,6 +144,34 @@ menubox(
 #
 
   #########
+  ## SU
+  #########
+
+  selectbox(
+    #-- Title
+    "ROOT method",
+    
+    #-- Sub Title
+    "Customize how to root your device",
+    
+    #-- Icon: <AROMA Resource Dir>/icons/personalize.png or <ThemeDir>/icon.personalize.png
+    "@sim",
+    
+    #-- Will be saved in /tmp/aroma/theme.prop
+    "pr_su.prop",
+
+    #----------[ Selectbox Without Group ]---------------#
+    # TITLE            |  SUBTITLE       | Initial Value #
+    #------------------+-----------------+---------------#
+    #--------[ Initial Value = 0: Unselected, 1: Selected, 2: Group Item, 3: Not Visible ]---------#
+
+    "No root",    "", 0, #-- selected.0 = 1
+    "Magisk+Superuser",    "", 1, #-- selected.0 = 2
+    "SuperSU",    "", 0 #-- selected.0 = 3
+
+  );
+
+  #########
   ## LITTLE CPU claster
   #########
 
