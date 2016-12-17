@@ -36,7 +36,15 @@ show_progress(0.08, "-2000");
         set_metadata_recursive("/tmp", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
 
     ui_print("|-> clean data");
-	run_program("/tmp/clean.sh");
+    if file_getprop("/tmp/aroma/pr_su.prop","selected.0") == "1" then
+	run_program("/tmp/clean.sh", "1");
+    endif;
+    if file_getprop("/tmp/aroma/pr_su.prop","selected.0") == "2" then
+	run_program("/tmp/clean.sh", "2");
+    endif;
+    if file_getprop("/tmp/aroma/pr_su.prop","selected.0") == "3" then
+	run_program("/tmp/clean.sh", "3");
+    endif;
 
 set_progress(0.10);
 show_progress(0.50, "-12000");
@@ -62,17 +70,22 @@ ui_print("@install");
     ui_print("@flash kernel");
         run_program("/tmp/busybox", "dd", "if=/tmp/boot.img", "of=/dev/block/platform/155a0000.ufs/by-name/BOOT");
 
-# Magisk & SU  apps
-    if file_getprop("/tmp/aroma/pr_su.prop","selected.0") == "2" then
-        package_extract_dir("magisk/ManagerApp", "/data");
-        package_extract_dir("su/SuperuserAPP", "/data");
-    endif;
+# common files
+    ui_print("|-> extract common files");
+        package_extract_dir("common/system", "/system");
+        set_metadata_recursive("/system/xbin", "uid", 0, "gid", 2000, "dmode", 0755, "fmode", 0755, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
 
-    if file_getprop("/tmp/aroma/pr_su.prop","selected.0") == "3" then
-	package_extract_dir("su/busybox", "/system");
-	set_perm(0, 2000, 0755, "/system/xbin/busybox");
-	run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
-	set_perm(0, 0, 0755, "/system/xbin/sqlite3");
+# Magisk & SU apps
+    if file_getprop("/tmp/aroma-data/pr_su.prop","selected.0") == "2" then
+        package_extract_dir("magisk/mm_app_v2.5", "/data/app");
+
+        set_metadata_recursive("/data/app/com.topjohnwu.magisk-1", "uid", 1000, "gid", 1000, "dmode", 0755, "fmode", 0755, "capabilities", 0x0, "selabel", "u:object_r:apk_data_file:s0");
+        set_metadata("/data/app/com.topjohnwu.magisk-1/base.apk", "uid", 1000 , "gid", 1000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:apk_data_file:s0");
+
+        package_extract_dir("magisk/su_app", "/data/app");
+
+        set_metadata_recursive("/data/app/me.phh.superuser-1", "uid", 1000, "gid", 1000, "dmode", 0755, "fmode", 0755, "capabilities", 0x0, "selabel", "u:object_r:apk_data_file:s0");
+        set_metadata("/data/app/me.phh.superuser-1/base.apk", "uid", 1000 , "gid", 1000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:apk_data_file:s0");
     endif;
 
 ###########################Unmounting###########################
@@ -85,31 +98,45 @@ show_progress(0.39, "-34000");
 
 
 ###########################External###########################
-    if file_getprop("/tmp/aroma/pr_su.prop","selected.0") == "1" then
+    if file_getprop("/tmp/aroma-data/pr_su.prop","selected.0") == "1" then
 # No root
         ui_print("|-> No root");
     endif;
 
-    if file_getprop("/tmp/aroma/pr_su.prop","selected.0") == "2" then
-# Magisk
+# Magisk & Superuser
+    if file_getprop("/tmp/aroma-data/pr_su.prop","selected.0") == "2" then
+        show_progress(0.22, "-18000");
+
+        # Magisk
         ui_print("|-> Magisk");
-        package_extract_dir("magisk/aroma", "/tmp/magisk");
-        run_program("/sbin/busybox", "unzip", "/tmp/magisk/Magisk-v9.zip", "META-INF/com/google/android/update-binary", "-d", "/tmp/magisk");
-        run_program("/sbin/busybox", "sh", "/tmp/magisk/META-INF/com/google/android/update-binary", "3", "42", "/tmp/magisk/Magisk-v9.zip");
-# Superuser
+        package_extract_dir("magisk/m_v9", "/tmp/magisk");
+        run_program("/sbin/busybox", "unzip", "/tmp/magisk/Magisk.zip", "META-INF/com/google/android/update-binary", "-d", "/tmp/magisk");
+        run_program("/sbin/busybox", "sh", "/tmp/magisk/META-INF/com/google/android/update-binary", "3", "42", "/tmp/magisk/Magisk.zip");
+
+        # Superuser
         ui_print("|-> Superuser");
-        package_extract_dir("su/Superuser", "/tmp/su");
-        run_program("/sbin/busybox", "unzip", "/tmp/su/phh-superuser-magisk-r266-2.zip", "META-INF/com/google/android/update-binary", "-d", "/tmp/su");
-        run_program("/sbin/busybox", "sh", "/tmp/su/META-INF/com/google/android/update-binary", "3", "42", "/tmp/su/phh-superuser-magisk-r266-2.zip");
+        package_extract_dir("magisk/su_r266-2", "/tmp/su");
+        run_program("/sbin/busybox", "unzip", "/tmp/su/phh-superuser-magisk.zip", "META-INF/com/google/android/update-binary", "-d", "/tmp/su");
+        run_program("/sbin/busybox", "sh", "/tmp/su/META-INF/com/google/android/update-binary", "3", "42", "/tmp/su/phh-superuser-magisk.zip");
     endif;
 
-    if file_getprop("/tmp/aroma/pr_su.prop","selected.0") == "3" then
 # SuperSU
-        ui_print("|-> SuperuSU");
+    if file_getprop("/tmp/aroma-data/pr_su.prop","selected.0") == "3" then
+        show_progress(0.22, "-35000");
+
+        # SuperSU
+        ui_print("|-> SuperSU");
 	package_extract_dir("su/SuperSU", "/tmp/su");
-        run_program("/sbin/busybox", "unzip", "/tmp/su/SR4-SuperSU-v2.78-SR4.zip", "META-INF/com/google/android/*", "-d", "/tmp/su");
-        run_program("/sbin/busybox", "sh", "/tmp/su/META-INF/com/google/android/update-binary", "3", "42", "/tmp/su/SR4-SuperSU-v2.78-SR4.zip");
+        run_program("/sbin/busybox", "unzip", "/tmp/su/SuperSU-v2.79.zip", "META-INF/com/google/android/*", "-d", "/tmp/su");
+        run_program("/sbin/busybox", "sh", "/tmp/su/META-INF/com/google/android/update-binary", "3", "42", "/tmp/su/SuperSU-v2.79.zip");
+
     endif;
+
+# Busybox
+    ui_print("|-> Busybox");
+    package_extract_dir("su/busybox", "/tmp/busybox");
+    run_program("/sbin/busybox", "unzip", "/tmp/busybox/UPDATE-Busybox.Installer.v1.25.1-ALL-signed.zip", "META-INF/com/google/android/*", "-d", "/tmp/busybox");
+    run_program("/sbin/busybox", "sh", "/tmp/busybox/META-INF/com/google/android/update-binary", "3", "42", "/tmp/busybox/UPDATE-Busybox.Installer.v1.25.1-ALL-signed.zip");
 
 ###########################Finish############################
 
