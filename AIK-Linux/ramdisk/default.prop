@@ -21,9 +21,9 @@ ro.smps.gain.spk=1.6
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=Thu Oct 27 18:38:24 KST 2016
-ro.bootimage.build.date.utc=1477561104
-ro.bootimage.build.fingerprint=samsung/hero2ltexx/hero2lte:6.0.1/MMB29K/G935FXXU1BPJK:user/test-keys
+ro.bootimage.build.date=Thu Dec 1 08:52:29 KST 2016
+ro.bootimage.build.date.utc=1480549949
+ro.bootimage.build.fingerprint=samsung/hero2ltexx/hero2lte:6.0.1/MMB29K/G935FXXU1BPL2:user/test-keys
 
 ro.config.knox=v00
 ro.security.mdpp.ux=Disabled

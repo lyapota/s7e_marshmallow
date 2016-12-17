@@ -13,7 +13,7 @@ fi
 # Remove SU images
 cd /data
 
-if [ $PARAM == "3" || $PARAM == "1" ]; then
+if [ $PARAM == "3" ] || [ $PARAM == "1" ]; then
   rm -f magisk.img
   rm -f stock_boot.img
 
@@ -26,7 +26,7 @@ if [ $PARAM == "3" || $PARAM == "1" ]; then
   rm -f /data/app/Magisk*.apk
 fi
 
-if [ $PARAM == "2" || $PARAM == "1" ]; then
+if [ $PARAM == "2" ] || [ $PARAM == "1" ]; then
   rm -f su.img
   rm -f stock_boot*.gz
 

@@ -134,9 +134,9 @@ show_progress(0.39, "-34000");
 
 # Busybox
     ui_print("|-> Busybox");
-    package_extract_dir("su/busybox", "/tmp/busybox");
-    run_program("/sbin/busybox", "unzip", "/tmp/busybox/UPDATE-Busybox.Installer.v1.25.1-ALL-signed.zip", "META-INF/com/google/android/*", "-d", "/tmp/busybox");
-    run_program("/sbin/busybox", "sh", "/tmp/busybox/META-INF/com/google/android/update-binary", "3", "42", "/tmp/busybox/UPDATE-Busybox.Installer.v1.25.1-ALL-signed.zip");
+	package_extract_dir("su/busybox", "/tmp/bb");
+        run_program("/sbin/busybox", "unzip", "/tmp/bb/Busybox.v1.25.1.zip", "META-INF/com/google/android/*", "-d", "/tmp/bb");
+        run_program("/sbin/busybox", "sh", "/tmp/bb/META-INF/com/google/android/update-binary", "3", "42", "/tmp/bb/Busybox.v1.25.1.zip");
 
 ###########################Finish############################
 

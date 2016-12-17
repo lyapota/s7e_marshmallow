@@ -88,7 +88,7 @@ on init
 
     # Directory-target for where the secure container
     # imagefile directory will be bind-mounted
-    mkdir /mnt/secure/asec 0700 root root
+    mkdir /mnt/secure/asec  0700 root root
     mount tmpfs tmpfs /mnt/secure/asec mode=0700,uid=0,gid=0
     restorecon_recursive /mnt/secure/asec
 
@@ -299,6 +299,8 @@ on init
 # reset_reason
     chown system system /proc/reset_reason
     chmod 0600 /proc/reset_reason
+    chown system system /proc/reset_reason_extra_info
+    chmod 0600 /proc/reset_reason_extra_info
 
 # Healthd can trigger a full boot from charger mode by signaling this
 # property when the power button is held.
@@ -356,8 +358,6 @@ on post-fs
     mount tmpfs tmpfs /mnt/secure private rec
     mount tmpfs tmpfs /mnt/secure/asec shared rec
 ## Samsung ODE <<<
-
-    mount tmpfs tmpfs /mnt/secure/asec shared rec
 
     # We chown/chmod /cache again so because mount is run as root + defaults
     chown system cache /cache
