@@ -237,6 +237,7 @@ FUNC_PACK_ZIP_FILE()
 	zip -gq $ZIP_NAME -r kernel/ -x "*~" 
 	zip -gq $ZIP_NAME -r su/ -x "*~" 
 	zip -gq $ZIP_NAME -r magisk/ -x "*~" 
+	zip -gq $ZIP_NAME -r common/ -x "*~" 
 
 	if [ ! -f "$ZIP_FILE_TARGET" ]; then
 		exit -1
