@@ -127,8 +127,8 @@ show_progress(0.39, "-34000");
         # SuperSU
         ui_print("|-> SuperSU");
 	package_extract_dir("su/SuperSU", "/tmp/su");
-        run_program("/sbin/busybox", "unzip", "/tmp/su/SuperSU-v2.79.zip", "META-INF/com/google/android/*", "-d", "/tmp/su");
-        run_program("/sbin/busybox", "sh", "/tmp/su/META-INF/com/google/android/update-binary", "3", "42", "/tmp/su/SuperSU-v2.79.zip");
+        run_program("/sbin/busybox", "unzip", "/tmp/su/SR1-SuperSU-v2.79-SR1-20161221223537.zip", "META-INF/com/google/android/*", "-d", "/tmp/su");
+        run_program("/sbin/busybox", "sh", "/tmp/su/META-INF/com/google/android/update-binary", "3", "42", "/tmp/su/SR1-SuperSU-v2.79-SR1-20161221223537.zip");
 
     endif;
 
