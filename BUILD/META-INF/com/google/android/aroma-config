@@ -39,10 +39,10 @@
 #
 
 ini_set("rom_name",             "Prometheus");
-ini_set("rom_version",          "2.1.0");
+ini_set("rom_version",          "2.2.0");
 ini_set("rom_author",           "lyapota");
 ini_set("rom_device",           "Samsung SM-G935F/G930F");
-ini_set("rom_date",             "17 December 2016");
+ini_set("rom_date",             "27 December 2016");
 
 ini_set("force_colorspace", "rgba");
 
